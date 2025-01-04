@@ -6,6 +6,7 @@ import {
     GetUser,
     DeleteUser,
     UpdateUser,
+    GetAllUsers,
 } from "../controller/userController";
 import { IsAuthenticated } from "../middleware/IsAuthenticated";
 import UploadFile from "../middleware/UploadFile";
@@ -14,6 +15,8 @@ const userRouter = express.Router();
 
 userRouter.route("/signin").post(Signin);
 userRouter.route("/signup").post(Signup);
+//test
+userRouter.route("/allUsers").get(GetAllUsers);
 
 userRouter.route("/uploadImage").post(UploadFile, UploadImage);
 userRouter.use(IsAuthenticated);

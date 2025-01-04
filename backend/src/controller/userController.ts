@@ -3,18 +3,9 @@ import { userModel } from "../model/userModel";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import cloudinary from "../config/cloudinary";
+import { signUpSchema } from "@zeditor/common";
 
 dotenv.config();
-
-export const signUpSchema = z.object({
-    name: z.string().min(2).max(20),
-    email: z.string().email().min(2).max(100),
-    password: z.string().min(2).max(20),
-    confirmPassword: z.string().min(2).max(20),
-    profileImage: z.string().optional(),
-});
-
-export type signUpType = z.infer<typeof signUpSchema>;
 
 export async function Signup(req: any, res: any) {
     //password === confirmPassword
@@ -233,6 +224,18 @@ export async function UploadImage(req: any, res: any) {
             msg: "image uploaded to cloudinary successfully",
             data: cldRes,
         });
+    } catch (err) {
+        return res.json({
+            err,
+        });
+    }
+}
+
+export async function GetAllUsers(req: any, res: any) {
+    try {
+        const user = await userModel.find();
+
+        return res.json({ msg: "all users", user });
     } catch (err) {
         return res.json({
             err,
