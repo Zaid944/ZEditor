@@ -4,7 +4,7 @@ import { Contest } from "./pages/Contest";
 import { Problems } from "./pages/Problems";
 import { Profile } from "./pages/Profile";
 import { Signin } from "./auth/Signin";
-import { Signup } from "./auth/Signup";
+import { Signup } from "./auth/Signup/components/Signup";
 
 function App() {
     return (

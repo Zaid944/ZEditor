@@ -11,6 +11,7 @@ export async function Signup(req: any, res: any) {
     //password === confirmPassword
 
     try {
+        console.log(req.body);
         const validate = signUpSchema.safeParse(req.body);
         console.log("validate", validate);
         if (validate.success) {
@@ -50,12 +51,16 @@ export async function Signup(req: any, res: any) {
             //TODO: Cookie value with whitespace is encoded on client side
             res.cookie("authToken", `Bearer ${token}`, {
                 expires: new Date(Date.now() + 60 * 60 * 60),
+                httpOnly: true,
+                secure: false,
+                sameSite: "none",
             });
 
             return res.json({
                 msg: "user signed up",
                 user,
                 token,
+                validate,
             });
         } else {
             return res.json({
@@ -107,6 +112,9 @@ export async function Signin(req: any, res: any) {
             // localStorage.setItem("authToken", `Bearer ${token}`);
             res.cookie("authToken", `Bearer ${token}`, {
                 expires: new Date(Date.now() + 60 * 60 * 60),
+                httpOnly: true,
+                secure: false,
+                sameSite: "none",
             });
 
             return res.json({
