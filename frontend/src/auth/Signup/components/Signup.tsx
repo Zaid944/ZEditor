@@ -111,9 +111,10 @@ export const Signup: React.FC = () => {
         const imageData = new FormData();
         if (profileImage) imageData.append("my_file", profileImage);
         const res = await axios.post(
-            "http://localhost:5000/user/v1/uploadImage",
+            "http://localhost:5000/file/v1/upload",
             imageData
         );
+        console.log(res);
         console.log("image url: ", res.data.data.url);
         console.log("[image upload] result is: ", res);
         setUploadImageToast(true);
@@ -153,7 +154,7 @@ export const Signup: React.FC = () => {
                     },
                 });
                 //TODO: set cookie from backend
-                Cookies.set("authToken", res.data.token);
+                Cookies.set("authToken", `Bearer ${res.data.token}`);
                 navigate("/");
             }
         }

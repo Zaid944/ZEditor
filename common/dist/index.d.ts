@@ -47,3 +47,161 @@ export declare const updateUserSchema: z.ZodObject<{
     profileImage?: string | undefined;
 }>;
 export type updateUserType = z.infer<typeof updateUserSchema>;
+export declare const testCaseSchema: z.ZodObject<{
+    image: z.ZodOptional<z.ZodString>;
+    input: z.ZodString;
+    output: z.ZodString;
+    explanation: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    input: string;
+    output: string;
+    explanation: string;
+    image?: string | undefined;
+}, {
+    input: string;
+    output: string;
+    explanation: string;
+    image?: string | undefined;
+}>;
+export type testCaseType = z.infer<typeof testCaseSchema>;
+export declare const createProblemSchema: z.ZodObject<{
+    title: z.ZodString;
+    description: z.ZodString;
+    problemImage: z.ZodOptional<z.ZodString>;
+    sample_tc: z.ZodArray<z.ZodObject<{
+        image: z.ZodOptional<z.ZodString>;
+        input: z.ZodString;
+        output: z.ZodString;
+        explanation: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        input: string;
+        output: string;
+        explanation: string;
+        image?: string | undefined;
+    }, {
+        input: string;
+        output: string;
+        explanation: string;
+        image?: string | undefined;
+    }>, "many">;
+    final_tc: z.ZodOptional<z.ZodString>;
+    constraints: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    topics: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    difficulty: z.ZodEnum<["EASY", "MEDIUM", "HARD"]>;
+}, "strip", z.ZodTypeAny, {
+    title: string;
+    description: string;
+    sample_tc: {
+        input: string;
+        output: string;
+        explanation: string;
+        image?: string | undefined;
+    }[];
+    difficulty: "EASY" | "MEDIUM" | "HARD";
+    problemImage?: string | undefined;
+    final_tc?: string | undefined;
+    constraints?: string[] | undefined;
+    topics?: string[] | undefined;
+}, {
+    title: string;
+    description: string;
+    sample_tc: {
+        input: string;
+        output: string;
+        explanation: string;
+        image?: string | undefined;
+    }[];
+    difficulty: "EASY" | "MEDIUM" | "HARD";
+    problemImage?: string | undefined;
+    final_tc?: string | undefined;
+    constraints?: string[] | undefined;
+    topics?: string[] | undefined;
+}>;
+export type createProblemType = z.infer<typeof createProblemSchema>;
+export declare const updateProblemSchema: z.ZodObject<{
+    title: z.ZodOptional<z.ZodString>;
+    description: z.ZodOptional<z.ZodString>;
+    problemImage: z.ZodOptional<z.ZodString>;
+    sample_tc: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        image: z.ZodOptional<z.ZodString>;
+        input: z.ZodString;
+        output: z.ZodString;
+        explanation: z.ZodString;
+    }, "strip", z.ZodTypeAny, {
+        input: string;
+        output: string;
+        explanation: string;
+        image?: string | undefined;
+    }, {
+        input: string;
+        output: string;
+        explanation: string;
+        image?: string | undefined;
+    }>, "many">>;
+    final_tc: z.ZodOptional<z.ZodString>;
+    constraints: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    topics: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    difficulty: z.ZodOptional<z.ZodEnum<["EASY", "MEDIUM", "HARD"]>>;
+}, "strip", z.ZodTypeAny, {
+    title?: string | undefined;
+    description?: string | undefined;
+    problemImage?: string | undefined;
+    sample_tc?: {
+        input: string;
+        output: string;
+        explanation: string;
+        image?: string | undefined;
+    }[] | undefined;
+    final_tc?: string | undefined;
+    constraints?: string[] | undefined;
+    topics?: string[] | undefined;
+    difficulty?: "EASY" | "MEDIUM" | "HARD" | undefined;
+}, {
+    title?: string | undefined;
+    description?: string | undefined;
+    problemImage?: string | undefined;
+    sample_tc?: {
+        input: string;
+        output: string;
+        explanation: string;
+        image?: string | undefined;
+    }[] | undefined;
+    final_tc?: string | undefined;
+    constraints?: string[] | undefined;
+    topics?: string[] | undefined;
+    difficulty?: "EASY" | "MEDIUM" | "HARD" | undefined;
+}>;
+export type updateProblemType = z.infer<typeof updateProblemSchema>;
+export declare const solveProblemSchema: z.ZodObject<{
+    submissions: z.ZodArray<z.ZodObject<{
+        source_code: z.ZodString;
+        input: z.ZodString;
+        expected_output: z.ZodString;
+        language_id: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
+        input: string;
+        source_code: string;
+        expected_output: string;
+        language_id: number;
+    }, {
+        input: string;
+        source_code: string;
+        expected_output: string;
+        language_id: number;
+    }>, "many">;
+}, "strip", z.ZodTypeAny, {
+    submissions: {
+        input: string;
+        source_code: string;
+        expected_output: string;
+        language_id: number;
+    }[];
+}, {
+    submissions: {
+        input: string;
+        source_code: string;
+        expected_output: string;
+        language_id: number;
+    }[];
+}>;
+export type solveProblemType = z.infer<typeof solveProblemSchema>;

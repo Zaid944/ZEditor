@@ -25,7 +25,7 @@ export interface User {
     email: string;
     password: string;
     profileImage?: string;
-    problems?: Problem[];
+    problems_solved?: Problem[];
     role: Role;
     isValidPassword: (password: string) => {};
 }
@@ -54,7 +54,7 @@ export const userSchema = new mongoose.Schema<User>({
     profileImage: {
         type: String,
     },
-    problems: {
+    problems_solved: {
         type: [
             {
                 type: mongoose.Types.ObjectId,

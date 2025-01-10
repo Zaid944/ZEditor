@@ -2,7 +2,6 @@ import z from "zod";
 import { userModel } from "../model/userModel";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import cloudinary from "../config/cloudinary";
 import { signUpSchema, updateUserSchema, signInSchema } from "@zeditor/common";
 
 dotenv.config();
@@ -196,25 +195,6 @@ export async function DeleteUser(req: any, res: any) {
         return res.json({
             msg: "user deleted",
             user,
-        });
-    } catch (err) {
-        return res.json({
-            err,
-        });
-    }
-}
-
-export async function UploadImage(req: any, res: any) {
-    try {
-        console.log("[upload image] req.file", req.file);
-        const b64 = Buffer.from(req.file.buffer).toString("base64");
-        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-        const cldRes = await cloudinary.uploader.upload(dataURI, {
-            resource_type: "auto",
-        });
-        res.json({
-            msg: "image uploaded to cloudinary successfully",
-            data: cldRes,
         });
     } catch (err) {
         return res.json({

@@ -1,0 +1,9 @@
+export enum StatusCodes {
+    REQ_BODY_NOT_VALIDATED = 400,
+    INTERNAL_SERVER_ERROR = 500,
+    SUCCESS = 200,
+}
+
+export const CREATE_PROBLEM = "[CREATE_PROBLEM]";
+export const UPDATE_PROBLEM = "[UPDATE_PROBLEM]";
+export const SOLVE_PROBLEM = "[SOLVE_PROBLEM]";
