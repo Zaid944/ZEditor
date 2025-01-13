@@ -1,4 +1,6 @@
 import axios from "axios";
+import { solveProblemHelperSchema } from "@zeditor/common";
+import { StatusCodes } from "../common/constants";
 
 //input\n1\n2\n3\n4\n5\noutput\n82\ninput\n2\n3\n4\n5\noutput\n2\n
 /*
@@ -11,6 +13,14 @@ import axios from "axios";
 */
 export async function SolveProblemHelper(req: any, res: any, next: any) {
     try {
+        const validate = solveProblemHelperSchema.safeParse(req.body);
+
+        if (!validate) {
+            return res.status(StatusCodes.REQ_BODY_NOT_VALIDATED).json({
+                msg: "req body not validated",
+            });
+        }
+
         const { url, source_code, language_id } = req.body;
         const resp = await axios.post("http://localhost:5000/file/v1/read", {
             url,
@@ -35,7 +45,7 @@ export async function SolveProblemHelper(req: any, res: any, next: any) {
         req.body = { submissions };
         next();
     } catch (err) {
-        return res.json({
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             err,
         });
     }

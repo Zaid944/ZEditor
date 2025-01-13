@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.solveProblemSchema = exports.updateProblemSchema = exports.createProblemSchema = exports.testCaseSchema = exports.updateUserSchema = exports.signInSchema = exports.signUpSchema = void 0;
+exports.SignInToastMode = exports.solveProblemHelperSchema = exports.readFileSchema = exports.solveProblemSchema = exports.updateProblemSchema = exports.createProblemSchema = exports.testCaseSchema = exports.updateUserSchema = exports.signInSchema = exports.signUpSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
 exports.signUpSchema = zod_1.default.object({
     name: zod_1.default.string().min(2).max(20),
@@ -56,3 +56,19 @@ exports.solveProblemSchema = zod_1.default.object({
         language_id: zod_1.default.number(),
     })),
 });
+exports.readFileSchema = zod_1.default.object({
+    url: zod_1.default.string(),
+});
+exports.solveProblemHelperSchema = zod_1.default.object({
+    url: zod_1.default.string(),
+    source_code: zod_1.default.string(),
+    language_id: zod_1.default.number(),
+});
+var SignInToastMode;
+(function (SignInToastMode) {
+    SignInToastMode[SignInToastMode["REQ_BODY_NOT_VALIDATED"] = 0] = "REQ_BODY_NOT_VALIDATED";
+    SignInToastMode[SignInToastMode["USER_NOT_FOUND"] = 1] = "USER_NOT_FOUND";
+    SignInToastMode[SignInToastMode["USER_SIGNED_IN"] = 2] = "USER_SIGNED_IN";
+    SignInToastMode[SignInToastMode["PASSWORD_NOT_VALIDATED"] = 3] = "PASSWORD_NOT_VALIDATED";
+    SignInToastMode[SignInToastMode["INTERNAL_SERVER_ERROR"] = 4] = "INTERNAL_SERVER_ERROR";
+})(SignInToastMode || (exports.SignInToastMode = SignInToastMode = {}));

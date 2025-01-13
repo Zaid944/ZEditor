@@ -1,4 +1,4 @@
-import z, { TypeOf } from "zod";
+import z from "zod";
 
 export const signUpSchema = z.object({
     name: z.string().min(2).max(20),
@@ -73,3 +73,25 @@ export const solveProblemSchema = z.object({
 });
 
 export type solveProblemType = z.infer<typeof solveProblemSchema>;
+
+export const readFileSchema = z.object({
+    url: z.string(),
+});
+
+export type readFileType = z.infer<typeof readFileSchema>;
+
+export const solveProblemHelperSchema = z.object({
+    url: z.string(),
+    source_code: z.string(),
+    language_id: z.number(),
+});
+
+export type solveProblemHelperType = z.infer<typeof solveProblemHelperSchema>;
+
+export enum SignInToastMode {
+    REQ_BODY_NOT_VALIDATED,
+    USER_NOT_FOUND,
+    USER_SIGNED_IN,
+    PASSWORD_NOT_VALIDATED,
+    INTERNAL_SERVER_ERROR,
+}

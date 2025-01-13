@@ -1,5 +1,7 @@
 import cloudinary from "../config/cloudinary";
 import got from "got";
+import { readFileSchema } from "@zeditor/common";
+import { StatusCodes } from "../common/constants";
 
 export async function UploadFile(req: any, res: any) {
     try {
@@ -21,16 +23,25 @@ export async function UploadFile(req: any, res: any) {
 }
 
 //http://res.cloudinary.com/dfywed5sc/raw/upload/v1736534761/vnwj86hzsxal5uwjx6ci
+
 export async function ReadFile(req: any, res: any) {
     try {
+        const validate = readFileSchema.safeParse(req.body);
+
+        if (!validate) {
+            return res.status(StatusCodes.REQ_BODY_NOT_VALIDATED).json({
+                msg: "[Read File] req body not validated",
+            });
+        }
+
         const { url } = req.body;
         const resp = await got(url);
         const file = resp.body;
-        return res.json({
+        return res.status(StatusCodes.SUCCESS).json({
             file,
         });
     } catch (err) {
-        return res.json({
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             err,
         });
     }

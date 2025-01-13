@@ -205,3 +205,32 @@ export declare const solveProblemSchema: z.ZodObject<{
     }[];
 }>;
 export type solveProblemType = z.infer<typeof solveProblemSchema>;
+export declare const readFileSchema: z.ZodObject<{
+    url: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    url: string;
+}, {
+    url: string;
+}>;
+export type readFileType = z.infer<typeof readFileSchema>;
+export declare const solveProblemHelperSchema: z.ZodObject<{
+    url: z.ZodString;
+    source_code: z.ZodString;
+    language_id: z.ZodNumber;
+}, "strip", z.ZodTypeAny, {
+    source_code: string;
+    language_id: number;
+    url: string;
+}, {
+    source_code: string;
+    language_id: number;
+    url: string;
+}>;
+export type solveProblemHelperType = z.infer<typeof solveProblemHelperSchema>;
+export declare enum SignInToastMode {
+    REQ_BODY_NOT_VALIDATED = 0,
+    USER_NOT_FOUND = 1,
+    USER_SIGNED_IN = 2,
+    PASSWORD_NOT_VALIDATED = 3,
+    INTERNAL_SERVER_ERROR = 4
+}

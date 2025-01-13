@@ -2,7 +2,12 @@ import z from "zod";
 import { userModel } from "../model/userModel";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { signUpSchema, updateUserSchema, signInSchema } from "@zeditor/common";
+import {
+    signUpSchema,
+    updateUserSchema,
+    signInSchema,
+    SignInToastMode,
+} from "@zeditor/common";
 
 dotenv.config();
 
@@ -76,8 +81,11 @@ export async function Signup(req: any, res: any) {
 }
 
 export async function Signin(req: any, res: any) {
+    let toast_mode;
     try {
+        console.log("signin req body", req.body);
         const validate = signInSchema.safeParse(req.body);
+        console.log("signin validate", validate);
         if (validate.success) {
             const { email, password } = req.body;
 
@@ -86,16 +94,21 @@ export async function Signin(req: any, res: any) {
             });
 
             if (!user) {
+                toast_mode = SignInToastMode.USER_NOT_FOUND;
                 return res.json({
                     msg: "user not found with given email",
+                    validate,
+                    toast_mode,
                 });
             }
 
             const validatePassword = await user.isValidPassword(password);
             console.log("[validatePassword] value ", validatePassword);
             if (!validatePassword) {
+                toast_mode = SignInToastMode.PASSWORD_NOT_VALIDATED;
                 return res.json({
                     msg: "password incorrect",
+                    toast_mode,
                 });
             }
 
@@ -116,18 +129,26 @@ export async function Signin(req: any, res: any) {
                 sameSite: "none",
             });
 
+            toast_mode = SignInToastMode.USER_SIGNED_IN;
             return res.json({
                 msg: "user signed in",
                 token,
+                validate,
+                toast_mode,
             });
         } else {
+            toast_mode = SignInToastMode.REQ_BODY_NOT_VALIDATED;
             return res.json({
                 msg: "signin req body not validated",
+                validate,
+                toast_mode,
             });
         }
     } catch (error) {
+        toast_mode = SignInToastMode.INTERNAL_SERVER_ERROR;
         return res.json({
             msg: "error while signing in user",
+            toast_mode,
             error,
         });
     }

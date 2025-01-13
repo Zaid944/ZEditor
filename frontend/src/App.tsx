@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home } from "./pages/Home";
+import { Homepage } from "./homepage/Homepage";
 import { Contest } from "./pages/Contest";
 import { Problems } from "./pages/Problems";
 import { Profile } from "./pages/Profile";
-import { Signin } from "./auth/Signin";
+import { Signin } from "./auth/Signin/components/Signin";
 import { Signup } from "./auth/Signup/components/Signup";
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
         <>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Homepage />} />
                     <Route path="/contest" element={<Contest />} />
                     <Route path="/problems" element={<Problems />} />
                     <Route path="/profile" element={<Profile />} />
