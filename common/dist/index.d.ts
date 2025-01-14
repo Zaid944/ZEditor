@@ -64,6 +64,8 @@ export declare const testCaseSchema: z.ZodObject<{
     image?: string | undefined;
 }>;
 export type testCaseType = z.infer<typeof testCaseSchema>;
+export declare const Difficulty: z.ZodEnum<["EASY", "MEDIUM", "HARD"]>;
+export type DifficultyType = z.infer<typeof Difficulty>;
 export declare const createProblemSchema: z.ZodObject<{
     title: z.ZodString;
     description: z.ZodString;

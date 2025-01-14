@@ -35,6 +35,10 @@ export const testCaseSchema = z.object({
 
 export type testCaseType = z.infer<typeof testCaseSchema>;
 
+export const Difficulty = z.enum(["EASY", "MEDIUM", "HARD"]);
+
+export type DifficultyType = z.infer<typeof Difficulty>;
+
 export const createProblemSchema = z.object({
     title: z.string(),
     description: z.string(),
@@ -43,7 +47,7 @@ export const createProblemSchema = z.object({
     final_tc: z.string().optional(),
     constraints: z.array(z.string()).optional(),
     topics: z.array(z.string()).optional(),
-    difficulty: z.enum(["EASY", "MEDIUM", "HARD"]),
+    difficulty: Difficulty,
 });
 
 export type createProblemType = z.infer<typeof createProblemSchema>;

@@ -1,4 +1,4 @@
-import { TextField, Button } from "@mui/material/";
+import { Button } from "@mui/material/";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { CloudUpload } from "@mui/icons-material";
@@ -169,7 +169,10 @@ export const Signup: React.FC = () => {
                     <div className="mt-10 text-center">
                         {fields.map((field, index) => (
                             <div key={index} className="mb-10">
-                                <TextField
+                                <label htmlFor={`yay ${index}`}>
+                                    {field.label}
+                                </label>
+                                <input
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => {
@@ -181,8 +184,8 @@ export const Signup: React.FC = () => {
                                             },
                                         });
                                     }}
-                                    className="w-1/2"
-                                    label={field.label}
+                                    id={`yay ${index}`}
+                                    className="w-1/2 border-2"
                                     type={field.type}
                                 />
                             </div>
@@ -192,7 +195,7 @@ export const Signup: React.FC = () => {
                                 <Button
                                     component="label"
                                     role={undefined}
-                                    variant="contained"
+                                    variant="outlined"
                                 >
                                     {profileImage
                                         ? "Change Profile Image"
@@ -216,7 +219,7 @@ export const Signup: React.FC = () => {
                             </div>
                             <div>
                                 <Button
-                                    variant="contained"
+                                    variant="outlined"
                                     startIcon={<CloudUpload />}
                                     onClick={handleImageUpload}
                                 >
@@ -238,7 +241,7 @@ export const Signup: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex justify-center mb-10">
-                        <Button variant="contained" onClick={handleSignUp}>
+                        <Button variant="outlined" onClick={handleSignUp}>
                             Sign Up
                         </Button>
                     </div>

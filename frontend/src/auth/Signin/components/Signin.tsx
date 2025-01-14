@@ -1,4 +1,4 @@
-import { TextField, Button } from "@mui/material/";
+import { Button } from "@mui/material/";
 import { Link } from "react-router-dom";
 import { useReducer, useState } from "react";
 import axios from "axios";
@@ -103,17 +103,19 @@ export const Signin: React.FC = () => {
                     {/* text-center -> alternate */}
                     <div className="mt-10 text-center">
                         <div className="mb-10">
-                            <TextField
-                                className="w-1/2"
-                                label="Email"
+                            <label htmlFor="email">Email</label>
+                            <input
+                                id="email"
+                                className="w-1/2 border-2"
                                 type="email"
                                 onChange={handleEmailIdChange}
                             />
                         </div>
                         <div className="mb-10">
-                            <TextField
-                                className="w-1/2"
-                                label="Password"
+                            <label htmlFor="password">Password</label>
+                            <input
+                                id="password"
+                                className="w-1/2 border-2"
                                 type="password"
                                 onChange={handlePasswordChange}
                             />
@@ -130,7 +132,7 @@ export const Signin: React.FC = () => {
                         />
                     </div>
                     <div className="flex justify-center mb-10">
-                        <Button variant="contained" onClick={handleSignIn}>
+                        <Button variant="outlined" onClick={handleSignIn}>
                             Sign In
                         </Button>
                     </div>
