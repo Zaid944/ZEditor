@@ -1,0 +1,160 @@
+import { ExpandMore } from "@mui/icons-material";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Button,
+} from "@mui/material";
+import { Fields } from "../common/Fields";
+import { useReducer, useState } from "react";
+import { useFile } from "../../../../common/hooks/useFile";
+import {
+    sampleTestCaseActionType,
+    sampleTestCaseInitialState,
+    sampleTestCaseReducer,
+} from "../../reducers/sampleTestCaseReducer";
+
+export interface SampleTestCaseProps {
+    name: string;
+}
+
+export const SampleTestCase: React.FC<SampleTestCaseProps> = ({ name }) => {
+    const [uploadFile] = useFile();
+    const [image, setImage] = useState<File | null>(null);
+    const [rateLimit, setRateLimit] = useState(true);
+    const [loading, setLoading] = useState(false);
+
+    const [sampleTestCaseState, sampleTestCaseDispatch] = useReducer(
+        sampleTestCaseReducer,
+        sampleTestCaseInitialState
+    );
+
+    function handleImageInputClick(e: React.MouseEvent<HTMLInputElement>) {
+        (e.target as HTMLInputElement).value = "";
+    }
+
+    function handleImageInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+        if (!e.target.files) {
+            return;
+        }
+
+        setRateLimit(true);
+        setImage(e.target.files[0]);
+    }
+
+    async function handleImageUpload() {
+        if (!(image && rateLimit)) {
+            return;
+        }
+
+        setLoading(true);
+        setRateLimit(false);
+        const url = await uploadFile(image);
+        console.log("image url: ", url);
+        // setUploadImageToast(true);
+        setLoading(false);
+        sampleTestCaseDispatch({
+            type: sampleTestCaseActionType.SET_IMAGE,
+            payload: { ...sampleTestCaseState, image: url },
+        });
+    }
+
+    function handleInputTestCaseChange(
+        e: React.ChangeEvent<HTMLTextAreaElement>
+    ) {
+        sampleTestCaseDispatch({
+            type: sampleTestCaseActionType.SET_INPUT,
+            payload: {
+                ...sampleTestCaseState,
+                input: e.target.value,
+            },
+        });
+    }
+
+    function handleOutputTestCaseChange(
+        e: React.ChangeEvent<HTMLTextAreaElement>
+    ) {
+        sampleTestCaseDispatch({
+            type: sampleTestCaseActionType.SET_OUTPUT,
+            payload: {
+                ...sampleTestCaseState,
+                output: e.target.value,
+            },
+        });
+    }
+
+    function handleExplanationChange(
+        e: React.ChangeEvent<HTMLTextAreaElement>
+    ) {
+        sampleTestCaseDispatch({
+            type: sampleTestCaseActionType.SET_EXPLANATION,
+            payload: {
+                ...sampleTestCaseState,
+                explanation: e.target.value,
+            },
+        });
+    }
+
+    return (
+        <div>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMore />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                >
+                    {name}
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Fields
+                        name="image"
+                        inputElement={
+                            <div className="space-x-4 flex">
+                                <Button
+                                    onClick={handleImageUpload}
+                                    variant="outlined"
+                                >
+                                    {loading ? "Uploading" : "Upload"}
+                                </Button>
+                                <input
+                                    type="file"
+                                    className="border-2"
+                                    onClick={handleImageInputClick}
+                                    onChange={handleImageInputChange}
+                                />
+                            </div>
+                        }
+                        right="3/4"
+                    />
+                    <Fields
+                        name="input"
+                        inputElement={
+                            <textarea
+                                onChange={handleInputTestCaseChange}
+                                className="border-2"
+                            />
+                        }
+                        right="3/4"
+                    />
+                    <Fields
+                        name="output"
+                        inputElement={
+                            <textarea
+                                onChange={handleOutputTestCaseChange}
+                                className="border-2"
+                            />
+                        }
+                        right="3/4"
+                    />
+                    <Fields
+                        name="explanation"
+                        inputElement={
+                            <textarea onChange={handleExplanationChange} className="border-2" />
+                        }
+                        right="3/4"
+                    />
+                </AccordionDetails>
+            </Accordion>
+        </div>
+    );
+};

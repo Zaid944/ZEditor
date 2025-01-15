@@ -15,6 +15,7 @@ import {
     signupToastReducer,
 } from "../reducers/signUpToastReducer";
 import Cookies from "js-cookie";
+import { useFile } from "../../../common/hooks/useFile";
 
 const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -36,6 +37,8 @@ type Field = {
 };
 
 export const Signup: React.FC = () => {
+    const [uploadFile] = useFile();
+
     const [signupState, signupStateDispatch] = useReducer(
         signupReducer,
         signupInitialState
@@ -108,20 +111,12 @@ export const Signup: React.FC = () => {
 
         setUploadImageLoading(true);
         setRateLimit(false);
-        const imageData = new FormData();
-        if (profileImage) imageData.append("my_file", profileImage);
-        const res = await axios.post(
-            "http://localhost:5000/file/v1/upload",
-            imageData
-        );
-        console.log(res);
-        console.log("image url: ", res.data.data.url);
-        console.log("[image upload] result is: ", res);
+        const url = await uploadFile(profileImage);
         setUploadImageToast(true);
         setUploadImageLoading(false);
         signupStateDispatch({
             type: SignupActionType.SET_PROFILE_IMAGE_URL,
-            payload: { profileImageUrl: res.data.data.url },
+            payload: { profileImageUrl: url },
         });
     }
 

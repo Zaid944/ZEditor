@@ -5,7 +5,7 @@ import { Contest } from "./pages/Contest";
 import { Profile } from "./pages/Profile";
 import { Signin } from "./auth/Signin/components/Signin";
 import { Signup } from "./auth/Signup/components/Signup";
-import { EditProblem } from "./problems/edit_problem/components/EditProblem";
+import { CreateProblems } from "./problems/crud_problem/components/CreateProblems";
 
 function App() {
     const routes = [
@@ -19,7 +19,7 @@ function App() {
         },
         {
             path: "/problems",
-            element: <EditProblem />,
+            element: <CreateProblems />,
         },
         {
             path: "/profile",
