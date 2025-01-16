@@ -19,10 +19,12 @@ export const testCaseSchema = z.object({
  */
 export type createProblemFileType = {
     problemImage?: File | null;
+    final_tc?: File | null;
 };
 
 export enum createProblemFileActionType {
     SET_PROBLEM_IMAGE,
+    SET_FINAL_TC,
 }
 
 export type createProblemFileAction = {
@@ -32,6 +34,7 @@ export type createProblemFileAction = {
 
 export const createProblemFileInitialState: createProblemFileType = {
     problemImage: null,
+    final_tc: null,
 };
 
 export const createProblemFileReducer = (
@@ -41,6 +44,8 @@ export const createProblemFileReducer = (
     switch (action.type) {
         case createProblemFileActionType.SET_PROBLEM_IMAGE:
             return { ...state, problemImage: action.payload.problemImage };
+        case createProblemFileActionType.SET_FINAL_TC:
+            return { ...state, problemImage: action.payload.final_tc };
         default:
             return state;
     }

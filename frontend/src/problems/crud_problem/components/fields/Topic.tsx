@@ -1,11 +1,37 @@
 import { ExpandMore } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Button,
+} from "@mui/material";
+import { testCaseType } from "@zeditor/common";
+import { useState } from "react";
 
 export interface TopicProps {
     name: string;
+    index: number;
+    setAccordionElementState: React.Dispatch<
+        React.SetStateAction<(testCaseType | string)[]>
+    >;
+    accoridionElementState: (testCaseType | string)[];
 }
 
-export const Topic: React.FC<TopicProps> = ({ name }) => {
+export const Topic: React.FC<TopicProps> = ({
+    name,
+    index,
+    setAccordionElementState,
+    accoridionElementState,
+}) => {
+    const [topic, setTopic] = useState("");
+    function handleTopicChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setTopic(e.target.value);
+    }
+    function handleTopicSubmit() {
+        const temp = [...accoridionElementState];
+        temp[index] = topic;
+        setAccordionElementState(temp);
+    }
     return (
         <Accordion>
             <AccordionSummary
@@ -16,7 +42,12 @@ export const Topic: React.FC<TopicProps> = ({ name }) => {
                 {name}
             </AccordionSummary>
             <AccordionDetails>
-                <input type="text" className="border-2" />
+                <input
+                    type="text"
+                    className="border-2"
+                    onChange={handleTopicChange}
+                />
+                <Button onClick={handleTopicSubmit}></Button>
             </AccordionDetails>
         </Accordion>
     );

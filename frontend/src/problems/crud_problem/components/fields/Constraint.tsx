@@ -1,11 +1,39 @@
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Button,
+} from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
+import { testCaseType } from "@zeditor/common";
+import { useState } from "react";
 
 export interface ConstraintProps {
     name: string;
+    index: number;
+    setAccordionElementState: React.Dispatch<
+        React.SetStateAction<(testCaseType | string)[]>
+    >;
+    accoridionElementState: (testCaseType | string)[];
 }
 
-export const Constraint: React.FC<ConstraintProps> = ({ name }) => {
+export const Constraint: React.FC<ConstraintProps> = ({
+    name,
+    accoridionElementState,
+    index,
+    setAccordionElementState,
+}) => {
+    const [constraint, setConstraint] = useState("");
+    function handleConstraintSubmit() {
+        const temp = [...accoridionElementState];
+        temp[index] = constraint;
+        setAccordionElementState(temp);
+    }
+
+    function handleConstraintChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setConstraint(e.target.value);
+    }
+
     return (
         <div>
             <Accordion>
@@ -17,7 +45,14 @@ export const Constraint: React.FC<ConstraintProps> = ({ name }) => {
                     {name}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <input type="text" className="border-2" />
+                    <input
+                        type="text"
+                        className="border-2"
+                        onChange={handleConstraintChange}
+                    />
+                    <Button variant="outlined" onClick={handleConstraintSubmit}>
+                        Submit
+                    </Button>
                 </AccordionDetails>
             </Accordion>
         </div>

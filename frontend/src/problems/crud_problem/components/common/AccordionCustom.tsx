@@ -5,21 +5,59 @@ import { useState } from "react";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { createProblemType, testCaseType } from "@zeditor/common";
+import {
+    createProblemAction,
+    createProblemActionType,
+} from "../../reducers/createProblemReducer";
+import BackupIcon from "@mui/icons-material/Backup";
 
 type AccordionCustomProps = {
     prefix: string;
-    ReactComponent: React.FC<
-        SampleTestCaseProps | ConstraintProps | TopicProps
-    >;
+    ReactComponent:
+        | React.FC<SampleTestCaseProps>
+        | React.FC<ConstraintProps>
+        | React.FC<TopicProps>;
+    createProblemDispatch: React.Dispatch<createProblemAction>;
+    action: createProblemActionType;
+    createProblemState: createProblemType;
+    field: string;
 };
 
 export const AccordionCustom: React.FC<AccordionCustomProps> = ({
     prefix,
     ReactComponent,
+    createProblemDispatch,
+    action,
+    field,
+    createProblemState,
 }) => {
+    const [accoridionElementState, setAccordionElementState] = useState<
+        (testCaseType | string)[]
+    >([]);
+
+    console.log("field", field);
+    console.log("accoridionElementState", accoridionElementState);
+
     const [accordionElements, setAccordionElements] = useState([
         { name: `${prefix}1` },
     ]);
+
+    function handleAccordionSubmit() {
+        console.log("field", [field]);
+        console.log("payload global", {
+            ...createProblemState,
+            [field]: accoridionElementState,
+        });
+        createProblemDispatch({
+            type: action,
+            payload: {
+                ...createProblemState,
+                [field]: accoridionElementState,
+            },
+        });
+    }
+
     function handleAddClick() {
         const sampleTestCount = accordionElements.length;
         setAccordionElements([
@@ -40,6 +78,9 @@ export const AccordionCustom: React.FC<AccordionCustomProps> = ({
                         <ReactComponent
                             name={accordionElement.name}
                             key={index}
+                            index={index}
+                            accoridionElementState={accoridionElementState}
+                            setAccordionElementState={setAccordionElementState}
                         />
                     );
                 })}
@@ -52,6 +93,9 @@ export const AccordionCustom: React.FC<AccordionCustomProps> = ({
                 disabled={accordionElements.length === 1}
             >
                 <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={handleAccordionSubmit}>
+                <BackupIcon />
             </IconButton>
         </div>
     );

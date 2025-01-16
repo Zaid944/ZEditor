@@ -13,12 +13,23 @@ import {
     sampleTestCaseInitialState,
     sampleTestCaseReducer,
 } from "../../reducers/sampleTestCaseReducer";
+import { testCaseType } from "@zeditor/common";
 
 export interface SampleTestCaseProps {
     name: string;
+    index: number;
+    setAccordionElementState: React.Dispatch<
+        React.SetStateAction<(testCaseType | string)[]>
+    >;
+    accoridionElementState: (testCaseType | string)[];
 }
 
-export const SampleTestCase: React.FC<SampleTestCaseProps> = ({ name }) => {
+export const SampleTestCase: React.FC<SampleTestCaseProps> = ({
+    name,
+    index,
+    setAccordionElementState,
+    accoridionElementState,
+}) => {
     const [uploadFile] = useFile();
     const [image, setImage] = useState<File | null>(null);
     const [rateLimit, setRateLimit] = useState(true);
@@ -95,6 +106,12 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({ name }) => {
         });
     }
 
+    function handleTestCaseSubmit() {
+        const temp = [...accoridionElementState];
+        temp[index] = sampleTestCaseState;
+        setAccordionElementState(temp);
+    }
+
     return (
         <div>
             <Accordion>
@@ -149,10 +166,16 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({ name }) => {
                     <Fields
                         name="explanation"
                         inputElement={
-                            <textarea onChange={handleExplanationChange} className="border-2" />
+                            <textarea
+                                onChange={handleExplanationChange}
+                                className="border-2"
+                            />
                         }
                         right="3/4"
                     />
+                    <Button variant="outlined" onClick={handleTestCaseSubmit}>
+                        Submit
+                    </Button>
                 </AccordionDetails>
             </Accordion>
         </div>
