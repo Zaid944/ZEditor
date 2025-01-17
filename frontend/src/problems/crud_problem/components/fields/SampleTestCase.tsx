@@ -14,6 +14,7 @@ import {
     sampleTestCaseReducer,
 } from "../../reducers/sampleTestCaseReducer";
 import { testCaseType } from "@zeditor/common";
+import toast, { Toaster } from "react-hot-toast";
 
 export interface SampleTestCaseProps {
     name: string;
@@ -51,6 +52,7 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({
 
         setRateLimit(true);
         setImage(e.target.files[0]);
+        toast.success(`image set for ${name}`);
     }
 
     async function handleImageUpload() {
@@ -67,6 +69,7 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({
             type: sampleTestCaseActionType.SET_IMAGE,
             payload: { ...sampleTestCaseState, image: url },
         });
+        toast.success(`image uploaded for ${name}`);
     }
 
     function handleInputTestCaseChange(
@@ -109,6 +112,7 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({
         const temp = [...accoridionElementState];
         temp[index] = sampleTestCaseState;
         setAccordionElementState(temp);
+        toast.success(`${name} data is set`);
     }
 
     return (
@@ -177,6 +181,7 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({
                     </Button>
                 </AccordionDetails>
             </Accordion>
+            <Toaster />
         </div>
     );
 };

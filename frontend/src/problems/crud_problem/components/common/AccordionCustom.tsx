@@ -11,6 +11,7 @@ import {
     createProblemActionType,
 } from "../../reducers/createProblemReducer";
 import BackupIcon from "@mui/icons-material/Backup";
+import toast, { Toaster } from "react-hot-toast";
 
 type AccordionCustomProps = {
     prefix: string;
@@ -48,6 +49,7 @@ export const AccordionCustom: React.FC<AccordionCustomProps> = ({
                 [field]: accoridionElementState,
             },
         });
+        toast.success("data set");
     }
 
     function handleAddClick() {
@@ -89,6 +91,7 @@ export const AccordionCustom: React.FC<AccordionCustomProps> = ({
             <IconButton onClick={handleAccordionSubmit}>
                 <BackupIcon />
             </IconButton>
+            <Toaster />
         </div>
     );
 };

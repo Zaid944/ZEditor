@@ -7,6 +7,7 @@ import {
 import { ExpandMore } from "@mui/icons-material";
 import { testCaseType } from "@zeditor/common";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export interface ConstraintProps {
     name: string;
@@ -28,6 +29,7 @@ export const Constraint: React.FC<ConstraintProps> = ({
         const temp = [...accoridionElementState];
         temp[index] = constraint;
         setAccordionElementState(temp);
+        toast.success(`${name} data is set`);
     }
 
     function handleConstraintChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -55,6 +57,7 @@ export const Constraint: React.FC<ConstraintProps> = ({
                     </Button>
                 </AccordionDetails>
             </Accordion>
+            <Toaster />
         </div>
     );
 };

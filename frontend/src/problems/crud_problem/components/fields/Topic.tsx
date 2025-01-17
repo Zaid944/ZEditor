@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { testCaseType } from "@zeditor/common";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export interface TopicProps {
     name: string;
@@ -31,26 +32,30 @@ export const Topic: React.FC<TopicProps> = ({
         const temp = [...accoridionElementState];
         temp[index] = topic;
         setAccordionElementState(temp);
+        toast.success(`${name} data is set`);
     }
     return (
-        <Accordion>
-            <AccordionSummary
-                expandIcon={<ExpandMore />}
-                aria-controls="panel1-content"
-                id="panel1-header"
-            >
-                {name}
-            </AccordionSummary>
-            <AccordionDetails>
-                <input
-                    type="text"
-                    className="border-2"
-                    onChange={handleTopicChange}
-                />
-                <Button variant="outlined" onClick={handleTopicSubmit}>
-                    Submit
-                </Button>
-            </AccordionDetails>
-        </Accordion>
+        <>
+            <Accordion>
+                <AccordionSummary
+                    expandIcon={<ExpandMore />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                >
+                    {name}
+                </AccordionSummary>
+                <AccordionDetails>
+                    <input
+                        type="text"
+                        className="border-2"
+                        onChange={handleTopicChange}
+                    />
+                    <Button variant="outlined" onClick={handleTopicSubmit}>
+                        Submit
+                    </Button>
+                </AccordionDetails>
+            </Accordion>
+            <Toaster position="top-center" />
+        </>
     );
 };
