@@ -20,16 +20,25 @@ import { RadioGroup } from "./fields/RadioGroup";
 import { useRadio } from "../../../common/hooks/useRadio";
 import { Difficulty } from "@zeditor/common";
 import BackupIcon from "@mui/icons-material/Backup";
+import { Toast } from "../../../common/Toast";
+import {
+    CreateProblemToastActionType,
+    CreateProblemToastReducer,
+} from "../reducers/createProblemToastReducer";
 
 export const CreateProblems: React.FC = () => {
     const [uploadFile] = useFile();
+
+    const [createProblemToastState, createProblemToastStateDispatch] =
+        useReducer(
+            CreateProblemToastReducer().createProblemToastReducer,
+            CreateProblemToastReducer().createProblemToastInitialState
+        );
 
     const [createProblemState, createProblemDispatch] = useReducer(
         createProblemReducer,
         createProblemInitialState
     );
-
-    console.log("state is: ", createProblemState);
 
     const [createProblemFileState, createProblemFileDispatch] = useReducer(
         createProblemFileReducer,
@@ -51,7 +60,6 @@ export const CreateProblems: React.FC = () => {
     ];
 
     const [value, inputProps] = useRadio("difficulty", Difficulty.Enum.EASY);
-    console.log("radio option is: ", value);
 
     //make it common both
     function handleTitleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -95,6 +103,9 @@ export const CreateProblems: React.FC = () => {
     }
 
     async function handleProblemImageUpload() {
+        console.log("yayyy");
+        console.log(rateLimit1);
+        console.log(createProblemFileState.problemImage);
         if (!(createProblemFileState.problemImage && rateLimit1)) {
             return;
         }
@@ -102,12 +113,24 @@ export const CreateProblems: React.FC = () => {
         setUploadProblemImageLoading(true);
         setRateLimit1(false);
         const url = await uploadFile(createProblemFileState.problemImage);
-        console.log("problem url: ", url);
         // setUploadImageToast(true);
         setUploadProblemImageLoading(false);
-        createProblemFileDispatch({
-            type: createProblemFileActionType.SET_PROBLEM_IMAGE,
-            payload: { problemImage: url },
+        console.log("url is: ", url);
+        //   open?: boolean;
+        //     setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+        //     content?: string;
+        //     severity?: AlertColor;
+        createProblemToastStateDispatch({
+            type: CreateProblemToastActionType.SET_VALUE,
+            payload: {
+                open: true,
+                severity: "success",
+                content: "problem image uploaded",
+            },
+        });
+        createProblemDispatch({
+            type: createProblemActionType.SET_PROBLEM_IMAGE,
+            payload: { ...createProblemState, problemImage: url },
         });
     }
 
@@ -118,7 +141,10 @@ export const CreateProblems: React.FC = () => {
             return;
         }
 
+        console.log("entered", e.target.files);
+
         setRateLimit2(true);
+        console.log("entered 3");
         createProblemFileDispatch({
             type: createProblemFileActionType.SET_FINAL_TC,
             payload: {
@@ -134,19 +160,33 @@ export const CreateProblems: React.FC = () => {
     }
 
     async function handleFinalTestCaseUpload() {
+        console.log("entered2 zaid");
+
+        console.log(createProblemFileState.final_tc);
+        console.log(rateLimit2);
         if (!(createProblemFileState.final_tc && rateLimit2)) {
             return;
         }
 
+        console.log("entered2");
+
         setUploadFinalTestCaseLoading(true);
         setRateLimit2(false);
         const url = await uploadFile(createProblemFileState.final_tc);
-        console.log("problem url: ", url);
         // setUploadImageToast(true);
         setUploadFinalTestCaseLoading(false);
-        createProblemFileDispatch({
-            type: createProblemFileActionType.SET_FINAL_TC,
-            payload: { final_tc: url },
+        console.log("final test case url: ", url);
+        createProblemToastStateDispatch({
+            type: CreateProblemToastActionType.SET_VALUE,
+            payload: {
+                open: true,
+                severity: "success",
+                content: "final test case uploaded",
+            },
+        });
+        createProblemDispatch({
+            type: createProblemActionType.SET_FINAL_TC,
+            payload: { ...createProblemState, final_tc: url },
         });
     }
 
@@ -158,6 +198,10 @@ export const CreateProblems: React.FC = () => {
                 difficulty: value,
             },
         });
+    }
+
+    function createProblem() {
+        console.log("state is: ", createProblemState);
     }
 
     return (
@@ -283,6 +327,7 @@ export const CreateProblems: React.FC = () => {
                     />
                 }
             />
+            <br />
             <Fields
                 name="topics"
                 inputElement={
@@ -295,6 +340,24 @@ export const CreateProblems: React.FC = () => {
                         action={createProblemActionType.SET_TOPICS}
                     />
                 }
+            />
+            <br />
+            <Button
+                onClick={createProblem}
+                className="w-full"
+                variant="outlined"
+            >
+                CREATE PROBLEM
+            </Button>
+            <Toast
+                open={createProblemToastState.open!}
+                //@ts-expect-error ignore
+                setOpen={createProblemToastStateDispatch}
+                severity={createProblemToastState.severity!}
+                variant="filled"
+                content={createProblemToastState.content}
+                horizontal="center"
+                vertical="top"
             />
         </div>
     );

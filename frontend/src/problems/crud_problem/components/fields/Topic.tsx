@@ -47,7 +47,9 @@ export const Topic: React.FC<TopicProps> = ({
                     className="border-2"
                     onChange={handleTopicChange}
                 />
-                <Button onClick={handleTopicSubmit}></Button>
+                <Button variant="outlined" onClick={handleTopicSubmit}>
+                    Submit
+                </Button>
             </AccordionDetails>
         </Accordion>
     );

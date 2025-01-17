@@ -1,42 +1,44 @@
 import { AlertColor } from "@mui/material";
 import { useState } from "react";
 
-export enum SignupToastActionType {
+export enum CreateProblemToastActionType {
     SET_VALUE,
 }
 
-export const SignupToastReducer = () => {
+export const CreateProblemToastReducer = () => {
     const [open, setOpen] = useState(false);
 
-    type signUpToast = {
+    type createProblemToast = {
         open?: boolean;
         setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
         content?: string;
         severity?: AlertColor;
     };
 
-    type signupToastActionObject = {
-        type?: SignupToastActionType;
-        payload?: signUpToast;
+    type createProblemToastActionObject = {
+        type?: CreateProblemToastActionType;
+        payload?: createProblemToast;
     };
-    type signupToastActionBoolean = boolean;
+    type createProblemToastActionBoolean = boolean;
 
-    type signUpToastAction = signupToastActionObject | signupToastActionBoolean;
+    type createProblemToastAction =
+        | createProblemToastActionObject
+        | createProblemToastActionBoolean;
 
-    const signupToastInitialState: signUpToast = {
+    const createProblemToastInitialState: createProblemToast = {
         open: open,
         setOpen: setOpen,
         content: "",
         severity: "success",
     };
 
-    const signupToastReducer = (
-        state: signUpToast,
-        action: signUpToastAction
+    const createProblemToastReducer = (
+        state: createProblemToast,
+        action: createProblemToastAction
     ) => {
         if (typeof action == "object") {
             switch (action.type) {
-                case SignupToastActionType.SET_VALUE:
+                case CreateProblemToastActionType.SET_VALUE:
                     return {
                         ...state,
                         open: action.payload?.open,
@@ -52,8 +54,8 @@ export const SignupToastReducer = () => {
     };
 
     return {
-        signupToastReducer,
-        signupToastInitialState,
-        SignupToastActionType,
+        createProblemToastReducer,
+        createProblemToastInitialState,
+        CreateProblemToastActionType,
     };
 };

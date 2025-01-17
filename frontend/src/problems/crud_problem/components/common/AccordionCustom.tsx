@@ -36,19 +36,11 @@ export const AccordionCustom: React.FC<AccordionCustomProps> = ({
         (testCaseType | string)[]
     >([]);
 
-    console.log("field", field);
-    console.log("accoridionElementState", accoridionElementState);
-
     const [accordionElements, setAccordionElements] = useState([
         { name: `${prefix}1` },
     ]);
 
     function handleAccordionSubmit() {
-        console.log("field", [field]);
-        console.log("payload global", {
-            ...createProblemState,
-            [field]: accoridionElementState,
-        });
         createProblemDispatch({
             type: action,
             payload: {

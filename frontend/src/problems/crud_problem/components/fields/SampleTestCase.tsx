@@ -61,7 +61,6 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({
         setLoading(true);
         setRateLimit(false);
         const url = await uploadFile(image);
-        console.log("image url: ", url);
         // setUploadImageToast(true);
         setLoading(false);
         sampleTestCaseDispatch({

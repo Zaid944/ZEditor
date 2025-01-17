@@ -12,7 +12,7 @@ import {
 } from "../reducers/signUpReducer";
 import {
     SignupToastActionType,
-    signupToastReducer,
+    SignupToastReducer,
 } from "../reducers/signUpToastReducer";
 import Cookies from "js-cookie";
 import { useFile } from "../../../common/hooks/useFile";
@@ -45,8 +45,8 @@ export const Signup: React.FC = () => {
     );
 
     const [signupToastState, signupToastStateDispatch] = useReducer(
-        signupToastReducer().signupToastReducer,
-        signupToastReducer().signupToastInitialState
+        SignupToastReducer().signupToastReducer,
+        SignupToastReducer().signupToastInitialState
     );
 
     const navigate = useNavigate();

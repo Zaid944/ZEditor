@@ -45,7 +45,7 @@ export const createProblemFileReducer = (
         case createProblemFileActionType.SET_PROBLEM_IMAGE:
             return { ...state, problemImage: action.payload.problemImage };
         case createProblemFileActionType.SET_FINAL_TC:
-            return { ...state, problemImage: action.payload.final_tc };
+            return { ...state, final_tc: action.payload.final_tc };
         default:
             return state;
     }
