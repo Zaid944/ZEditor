@@ -18,9 +18,11 @@ import {
 import { useFile } from "../../../common/hooks/useFile";
 import { RadioGroup } from "./fields/RadioGroup";
 import { useRadio } from "../../../common/hooks/useRadio";
-import { Difficulty } from "@zeditor/common";
+import { createProblemType, Difficulty, StatusCodes } from "@zeditor/common";
 import BackupIcon from "@mui/icons-material/Backup";
 import toast, { Toaster } from "react-hot-toast";
+import axios, { isAxiosError } from "axios";
+import Cookies from "js-cookie";
 
 export const CreateProblems: React.FC = () => {
     const [uploadFile] = useFile();
@@ -178,9 +180,39 @@ export const CreateProblems: React.FC = () => {
         });
     }
 
-    function createProblem() {
+    async function createProblem() {
         console.log("state is: ", createProblemState);
-        toast.success("problem created");
+        const createProblemPayload: createProblemType = createProblemState;
+        const cookie = Cookies.get("authToken");
+        console.log("cookie", cookie);
+        try {
+            const res = await axios.post(
+                "http://localhost:5000/problemset/v1/createProblem",
+                createProblemPayload,
+                {
+                    headers: {
+                        Authorization: cookie,
+                    },
+                }
+            );
+            console.log("problem created", res);
+            switch (res.status) {
+                case StatusCodes.SUCCESS:
+                    toast.success("problem created");
+            }
+        } catch (err) {
+            if (isAxiosError(err)) {
+                switch (err.response?.status) {
+                    case StatusCodes.INTERNAL_SERVER_ERROR:
+                        toast.error(
+                            "internal server error/mongoose schema validation failed"
+                        );
+                        break;
+                    case StatusCodes.REQ_BODY_NOT_VALIDATED:
+                        toast.error("req body not validated");
+                }
+            }
+        }
     }
 
     return (

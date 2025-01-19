@@ -1,4 +1,5 @@
 import z from "zod";
+import mongoose, { InferRawDocType } from "mongoose";
 
 export const signUpSchema = z.object({
     name: z.string().min(2).max(20),
@@ -99,3 +100,59 @@ export enum SignInToastMode {
     PASSWORD_NOT_VALIDATED,
     INTERNAL_SERVER_ERROR,
 }
+
+export enum StatusCodes {
+    REQ_BODY_NOT_VALIDATED = 501,
+    INTERNAL_SERVER_ERROR = 500,
+    SUCCESS = 200,
+}
+
+export const problemSchemaObj = {
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    problemImage: {
+        type: String,
+    },
+    //doubt
+    sample_tc: {
+        type: [
+            new mongoose.Schema({
+                image: {
+                    type: String,
+                },
+                input: {
+                    type: String,
+                    required: true,
+                },
+                output: {
+                    type: String,
+                    required: true,
+                },
+                explanation: {
+                    type: String,
+                },
+            }),
+        ],
+        required: true,
+    },
+    final_tc: {
+        type: String,
+    },
+    constraints: {
+        type: [String],
+    },
+    topics: {
+        type: [String],
+    },
+    difficulty: {
+        type: String,
+    },
+} as const;
+
+export type problemType = InferRawDocType<typeof problemSchemaObj>;

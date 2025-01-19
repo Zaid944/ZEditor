@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SignInToastMode = exports.solveProblemHelperSchema = exports.readFileSchema = exports.solveProblemSchema = exports.updateProblemSchema = exports.createProblemSchema = exports.Difficulty = exports.testCaseSchema = exports.updateUserSchema = exports.signInSchema = exports.signUpSchema = void 0;
+exports.problemSchemaObj = exports.StatusCodes = exports.SignInToastMode = exports.solveProblemHelperSchema = exports.readFileSchema = exports.solveProblemSchema = exports.updateProblemSchema = exports.createProblemSchema = exports.Difficulty = exports.testCaseSchema = exports.updateUserSchema = exports.signInSchema = exports.signUpSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
+const mongoose_1 = __importDefault(require("mongoose"));
 exports.signUpSchema = zod_1.default.object({
     name: zod_1.default.string().min(2).max(20),
     email: zod_1.default.string().email().min(2).max(100),
@@ -73,3 +74,56 @@ var SignInToastMode;
     SignInToastMode[SignInToastMode["PASSWORD_NOT_VALIDATED"] = 3] = "PASSWORD_NOT_VALIDATED";
     SignInToastMode[SignInToastMode["INTERNAL_SERVER_ERROR"] = 4] = "INTERNAL_SERVER_ERROR";
 })(SignInToastMode || (exports.SignInToastMode = SignInToastMode = {}));
+var StatusCodes;
+(function (StatusCodes) {
+    StatusCodes[StatusCodes["REQ_BODY_NOT_VALIDATED"] = 501] = "REQ_BODY_NOT_VALIDATED";
+    StatusCodes[StatusCodes["INTERNAL_SERVER_ERROR"] = 500] = "INTERNAL_SERVER_ERROR";
+    StatusCodes[StatusCodes["SUCCESS"] = 200] = "SUCCESS";
+})(StatusCodes || (exports.StatusCodes = StatusCodes = {}));
+exports.problemSchemaObj = {
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    problemImage: {
+        type: String,
+    },
+    //doubt
+    sample_tc: {
+        type: [
+            new mongoose_1.default.Schema({
+                image: {
+                    type: String,
+                },
+                input: {
+                    type: String,
+                    required: true,
+                },
+                output: {
+                    type: String,
+                    required: true,
+                },
+                explanation: {
+                    type: String,
+                },
+            }),
+        ],
+        required: true,
+    },
+    final_tc: {
+        type: String,
+    },
+    constraints: {
+        type: [String],
+    },
+    topics: {
+        type: [String],
+    },
+    difficulty: {
+        type: String,
+    },
+};

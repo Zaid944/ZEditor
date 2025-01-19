@@ -1,4 +1,5 @@
 import z from "zod";
+import mongoose, { InferRawDocType } from "mongoose";
 export declare const signUpSchema: z.ZodObject<{
     name: z.ZodString;
     email: z.ZodString;
@@ -236,3 +237,57 @@ export declare enum SignInToastMode {
     PASSWORD_NOT_VALIDATED = 3,
     INTERNAL_SERVER_ERROR = 4
 }
+export declare enum StatusCodes {
+    REQ_BODY_NOT_VALIDATED = 501,
+    INTERNAL_SERVER_ERROR = 500,
+    SUCCESS = 200
+}
+export declare const problemSchemaObj: {
+    readonly title: {
+        readonly type: StringConstructor;
+        readonly required: true;
+    };
+    readonly description: {
+        readonly type: StringConstructor;
+        readonly required: true;
+    };
+    readonly problemImage: {
+        readonly type: StringConstructor;
+    };
+    readonly sample_tc: {
+        readonly type: readonly [mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
+            input: string;
+            output: string;
+            image?: string | null | undefined;
+            explanation?: string | null | undefined;
+        }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
+            input: string;
+            output: string;
+            image?: string | null | undefined;
+            explanation?: string | null | undefined;
+        }>> & mongoose.FlatRecord<{
+            input: string;
+            output: string;
+            image?: string | null | undefined;
+            explanation?: string | null | undefined;
+        }> & {
+            _id: mongoose.Types.ObjectId;
+        } & {
+            __v: number;
+        }>];
+        readonly required: true;
+    };
+    readonly final_tc: {
+        readonly type: StringConstructor;
+    };
+    readonly constraints: {
+        readonly type: readonly [StringConstructor];
+    };
+    readonly topics: {
+        readonly type: readonly [StringConstructor];
+    };
+    readonly difficulty: {
+        readonly type: StringConstructor;
+    };
+};
+export type problemType = InferRawDocType<typeof problemSchemaObj>;

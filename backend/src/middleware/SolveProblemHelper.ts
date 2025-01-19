@@ -1,6 +1,6 @@
 import axios from "axios";
 import { solveProblemHelperSchema } from "@zeditor/common";
-import { StatusCodes } from "../common/constants";
+import { StatusCodes } from "@zeditor/common";
 
 //input\n1\n2\n3\n4\n5\noutput\n82\ninput\n2\n3\n4\n5\noutput\n2\n
 /*

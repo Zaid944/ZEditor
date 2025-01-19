@@ -1,7 +1,7 @@
 import cloudinary from "../config/cloudinary";
 import got from "got";
 import { readFileSchema } from "@zeditor/common";
-import { StatusCodes } from "../common/constants";
+import { StatusCodes } from "@zeditor/common";
 
 export async function UploadFile(req: any, res: any) {
     try {

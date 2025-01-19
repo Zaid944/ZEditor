@@ -9,7 +9,7 @@ const NavbarTab: React.FC<Props> = ({ children }) => {
     return (
         <>
             <div className="flex items-center">
-                <div className="flex justify-center items-center rounded-md text-white bg-blue-900 h-12 w-40 cursor-pointer">
+                <div className="flex justify-center items-center rounded-md h-12 w-40 cursor-pointer">
                     {children}
                 </div>
             </div>
@@ -25,7 +25,7 @@ export const Navbar: React.FC = () => {
     }
     return (
         <>
-            <div className="flex mt-20 ml-10 mr-10 px-10 py-8 justify-between bg-blue-600 rounded-md">
+            <div className="flex mt-20 ml-10 mr-10 px-10 py-8 justify-between rounded-md">
                 <div className="flex justify-between w-1/2">
                     <NavbarTab>
                         <Link to="/">Home</Link>

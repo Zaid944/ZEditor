@@ -3,22 +3,33 @@ import {
     createProblemSchema,
     updateProblemSchema,
     solveProblemSchema,
+    problemType,
 } from "@zeditor/common";
 import {
-    StatusCodes,
     CREATE_PROBLEM,
     UPDATE_PROBLEM,
     SOLVE_PROBLEM,
 } from "../common/constants";
+import { StatusCodes } from "@zeditor/common";
 import { problemModel } from "../model/problemModel";
 import {
     Judge0Submit_GET,
     Judge0Submit_POST,
 } from "../common/problem_execution/Judge0";
+import { ZodError } from "zod";
+import { Document } from "mongoose";
 
 dotenv.config();
 
+export function isZodError(err: unknown): err is ZodError {
+    return Boolean(
+        err &&
+            (err instanceof ZodError || (err as ZodError).name === "ZodError")
+    );
+}
+
 export async function createProblem(req: any, res: any) {
+    console.log("reached create problem");
     try {
         const validate = createProblemSchema.safeParse(req.body);
         if (!validate) {
@@ -88,7 +99,7 @@ export async function deleteProblem(req: any, res: any) {
 
 export async function getAllProblems(req: any, res: any) {
     try {
-        const problems = await problemModel.find();
+        const problems: Document<problemType>[] = await problemModel.find();
         return res.status(StatusCodes.SUCCESS).json({
             msg: "all problems",
             problems,
@@ -150,6 +161,3 @@ export async function solveProblem(req: any, res: any) {
         });
     }
 }
-
-
-
