@@ -6,6 +6,7 @@ import { Profile } from "./pages/Profile";
 import { Signin } from "./auth/Signin/components/Signin";
 import { Signup } from "./auth/Signup/components/Signup";
 import { CreateProblems } from "./problems/crud_problem/components/CreateProblems";
+import { SolveProblem } from "./problems/solve_problem/components/SolveProblem";
 
 function App() {
     const routes = [
@@ -32,6 +33,10 @@ function App() {
         {
             path: "/signup",
             element: <Signup />,
+        },
+        {
+            path: "/problems/:problem_id",
+            element: <SolveProblem />,
         },
     ];
     return (

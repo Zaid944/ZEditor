@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { problemType } from "@zeditor/common";
+import { Link } from "react-router-dom";
 
 export const Problems: React.FC = () => {
-    const [problems, setProblems] = useState([]);
+    const [problems, setProblems] = useState<problemType[]>([]);
     async function getAllProblems() {
         const cookie = Cookies.get("authToken");
         try {
@@ -15,7 +17,7 @@ export const Problems: React.FC = () => {
                     },
                 }
             );
-            console.log(res.data.problems);
+            console.log(res.data);
             setProblems(res.data.problems);
         } catch (err) {
             console.log(err);
@@ -29,18 +31,11 @@ export const Problems: React.FC = () => {
             {problems &&
                 problems.map((problem) => (
                     <div className="flex item-center justify-center h-12 w-40 underline cursor-pointer">
-                        {problem.title}
-                        {/* <Link to={`/problems/${problem?.id}`}>
-                            {problem}
-                        </Link> */}
+                        <Link to={`/problems/${problem._id}`}>
+                            {problem.title}
+                        </Link>
                     </div>
                 ))}
-            {/* {problems &&
-                problems.map((problem) => (
-                    <div>
-                        <div>{problem}</div>
-                    </div>
-                ))} */}
         </div>
     );
 };

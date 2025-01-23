@@ -112,15 +112,20 @@ export async function getAllProblems(req: any, res: any) {
 }
 
 export async function getProblem(req: any, res: any) {
+    console.log("getProblem");
+    console.log("entered");
     try {
         const { problemId } = req.params;
+        console.log(problemId);
 
         const problem = await problemModel.findById(problemId);
+        console.log("entered2");
         return res.status(StatusCodes.SUCCESS).json({
             msg: "problem got",
             problem,
         });
     } catch (err) {
+        console.log("entered3");
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             msg: "not able to get problem",
             err,
