@@ -16,8 +16,9 @@ import {
     Judge0Submit_GET,
     Judge0Submit_POST,
 } from "../common/problem_execution/Judge0";
-import { ZodError } from "zod";
+import { boolean, ZodError } from "zod";
 import { Document } from "mongoose";
+import { codeStatus } from "@zeditor/common";
 
 dotenv.config();
 
@@ -139,6 +140,7 @@ export async function getProblem(req: any, res: any) {
 // language_id
 export async function solveProblem(req: any, res: any) {
     try {
+        console.log("reached here");
         const validate = solveProblemSchema.safeParse(req.body);
         if (!validate) {
             return res.status(StatusCodes.REQ_BODY_NOT_VALIDATED).json({
@@ -147,8 +149,40 @@ export async function solveProblem(req: any, res: any) {
         }
 
         const submissionTokens = await Judge0Submit_POST(req.body);
-        const submissionResponse = await Judge0Submit_GET(submissionTokens);
+        console.log("submissionToken", submissionTokens);
+        const tokens = [];
+        if (submissionTokens) {
+            for (let i = 0; i < submissionTokens?.length; i++) {
+                tokens.push(submissionTokens[i].token);
+            }
+        }
+        let submissionResponse = await Judge0Submit_GET(tokens);
+        let retry: boolean = true;
+        while (retry) {
+            let loop: boolean = true;
+            console.log(
+                "submissionResponse.submissions",
+                submissionResponse.submissions
+            );
+            for (let i = 0; i < submissionResponse.submissions.length; i++) {
+                console.log(
+                    "submissionResponse.submissions[i].status.id",
+                    submissionResponse.submissions[i].status.id
+                );
+                if (
+                    submissionResponse.submissions[i].status.id === 1 ||
+                    submissionResponse.submissions[i].status.id === 2
+                ) {
+                    submissionResponse = await Judge0Submit_GET(tokens);
+                    loop = false;
+                }
+            }
+            if (loop) retry = false;
 
+            console.log("submissionResponse", submissionResponse);
+        }
+
+        console.log("submissionResponse", submissionResponse);
         if (!submissionResponse) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                 msg: "not able to submit",

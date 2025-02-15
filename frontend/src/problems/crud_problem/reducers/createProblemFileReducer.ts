@@ -25,6 +25,7 @@ export type createProblemFileType = {
 export enum createProblemFileActionType {
     SET_PROBLEM_IMAGE,
     SET_FINAL_TC,
+    SET_PROBLEM_SOLUTION,
 }
 
 export type createProblemFileAction = {

@@ -13,6 +13,7 @@ import { StatusCodes } from "@zeditor/common";
 */
 export async function SolveProblemHelper(req: any, res: any, next: any) {
     try {
+        console.log("reached here");
         const validate = solveProblemHelperSchema.safeParse(req.body);
 
         if (!validate) {
@@ -22,11 +23,12 @@ export async function SolveProblemHelper(req: any, res: any, next: any) {
         }
 
         const { url, source_code, language_id } = req.body;
-        const resp = await axios.post("http://localhost:5000/file/v1/read", {
+        const resp = await axios.post("http://localhost:5001/file/v1/read", {
             url,
         });
 
         const file = resp.data.file;
+        console.log("file is: ", file);
 
         //parse file
         const submissions = [];

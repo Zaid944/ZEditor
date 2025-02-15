@@ -69,10 +69,10 @@ export type updateProblemType = z.infer<typeof updateProblemSchema>;
 export const solveProblemSchema = z.object({
     submissions: z.array(
         z.object({
-            source_code: z.string(),
-            input: z.string(),
-            expected_output: z.string(),
-            language_id: z.number(),
+            source_code: z.string().optional(),
+            stdin: z.string().optional(),
+            expected_output: z.string().optional(),
+            language_id: z.number().optional(),
         })
     ),
 });
@@ -153,6 +153,68 @@ export const problemSchemaObj = {
     difficulty: {
         type: String,
     },
+    solution: {
+        type: String,
+    },
 } as const;
 
 export type problemType = InferRawDocType<typeof problemSchemaObj>;
+
+export const codeStatus = [
+    {
+        id: 1,
+        description: "In Queue",
+    },
+    {
+        id: 2,
+        description: "Processing",
+    },
+    {
+        id: 3,
+        description: "Accepted",
+    },
+    {
+        id: 4,
+        description: "Wrong Answer",
+    },
+    {
+        id: 5,
+        description: "Time Limit Exceeded",
+    },
+    {
+        id: 6,
+        description: "Compilation Error",
+    },
+    {
+        id: 7,
+        description: "Runtime Error (SIGSEGV)",
+    },
+    {
+        id: 8,
+        description: "Runtime Error (SIGXFSZ)",
+    },
+    {
+        id: 9,
+        description: "Runtime Error (SIGFPE)",
+    },
+    {
+        id: 10,
+        description: "Runtime Error (SIGABRT)",
+    },
+    {
+        id: 11,
+        description: "Runtime Error (NZEC)",
+    },
+    {
+        id: 12,
+        description: "Runtime Error (Other)",
+    },
+    {
+        id: 13,
+        description: "Internal Error",
+    },
+    {
+        id: 14,
+        description: "Exec Format Error",
+    },
+];

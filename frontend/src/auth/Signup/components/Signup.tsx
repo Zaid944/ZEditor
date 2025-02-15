@@ -122,7 +122,7 @@ export const Signup: React.FC = () => {
 
     async function handleSignUp() {
         const res = await axios.post(
-            "http://localhost:5000/user/v1/signup",
+            "http://localhost:5001/user/v1/signup",
             signupState
         );
         console.log("res: ", res);

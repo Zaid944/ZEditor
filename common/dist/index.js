@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.problemSchemaObj = exports.StatusCodes = exports.SignInToastMode = exports.solveProblemHelperSchema = exports.readFileSchema = exports.solveProblemSchema = exports.updateProblemSchema = exports.createProblemSchema = exports.Difficulty = exports.testCaseSchema = exports.updateUserSchema = exports.signInSchema = exports.signUpSchema = void 0;
+exports.codeStatus = exports.problemSchemaObj = exports.StatusCodes = exports.SignInToastMode = exports.solveProblemHelperSchema = exports.readFileSchema = exports.solveProblemSchema = exports.updateProblemSchema = exports.createProblemSchema = exports.Difficulty = exports.testCaseSchema = exports.updateUserSchema = exports.signInSchema = exports.signUpSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
 const mongoose_1 = __importDefault(require("mongoose"));
 exports.signUpSchema = zod_1.default.object({
@@ -52,10 +52,10 @@ exports.updateProblemSchema = zod_1.default.object({
 });
 exports.solveProblemSchema = zod_1.default.object({
     submissions: zod_1.default.array(zod_1.default.object({
-        source_code: zod_1.default.string(),
-        input: zod_1.default.string(),
-        expected_output: zod_1.default.string(),
-        language_id: zod_1.default.number(),
+        source_code: zod_1.default.string().optional(),
+        stdin: zod_1.default.string().optional(),
+        expected_output: zod_1.default.string().optional(),
+        language_id: zod_1.default.number().optional(),
     })),
 });
 exports.readFileSchema = zod_1.default.object({
@@ -126,4 +126,65 @@ exports.problemSchemaObj = {
     difficulty: {
         type: String,
     },
+    solution: {
+        type: String,
+    },
 };
+exports.codeStatus = [
+    {
+        id: 1,
+        description: "In Queue",
+    },
+    {
+        id: 2,
+        description: "Processing",
+    },
+    {
+        id: 3,
+        description: "Accepted",
+    },
+    {
+        id: 4,
+        description: "Wrong Answer",
+    },
+    {
+        id: 5,
+        description: "Time Limit Exceeded",
+    },
+    {
+        id: 6,
+        description: "Compilation Error",
+    },
+    {
+        id: 7,
+        description: "Runtime Error (SIGSEGV)",
+    },
+    {
+        id: 8,
+        description: "Runtime Error (SIGXFSZ)",
+    },
+    {
+        id: 9,
+        description: "Runtime Error (SIGFPE)",
+    },
+    {
+        id: 10,
+        description: "Runtime Error (SIGABRT)",
+    },
+    {
+        id: 11,
+        description: "Runtime Error (NZEC)",
+    },
+    {
+        id: 12,
+        description: "Runtime Error (Other)",
+    },
+    {
+        id: 13,
+        description: "Internal Error",
+    },
+    {
+        id: 14,
+        description: "Exec Format Error",
+    },
+];

@@ -44,6 +44,7 @@ export const CreateProblems: React.FC = () => {
 
     const [rateLimit1, setRateLimit1] = useState(true);
     const [rateLimit2, setRateLimit2] = useState(true);
+    const [rateLimit3, setRateLimit3] = useState(true);
 
     const radioButtonOptions = [
         { label: "Easy", id: "easy", value: Difficulty.Enum.EASY },
@@ -78,6 +79,21 @@ export const CreateProblems: React.FC = () => {
 
     function handleProblemImageClick(e: React.MouseEvent<HTMLInputElement>) {
         (e.target as HTMLInputElement).value = "";
+    }
+
+    function handleSolutionChange(e: React.ChangeEvent<HTMLInputElement>) {
+        if (!e.target.files) {
+            return;
+        }
+
+        setRateLimit3(true);
+        createProblemFileDispatch({
+            type: createProblemFileActionType.SET_PROBLEM_SOLUTION,
+            payload: {
+                problemImage: e.target.files[0],
+            },
+        });
+        toast.success("problem image set");
     }
 
     function handleProblemImageChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -187,7 +203,7 @@ export const CreateProblems: React.FC = () => {
         console.log("cookie", cookie);
         try {
             const res = await axios.post(
-                "http://localhost:5000/problemset/v1/createProblem",
+                "http://localhost:5001/problemset/v1/createProblem",
                 createProblemPayload,
                 {
                     headers: {
@@ -240,6 +256,26 @@ export const CreateProblems: React.FC = () => {
             <br />
             <Fields
                 name="problem image"
+                inputElement={
+                    <div className="space-x-4">
+                        <input
+                            type="file"
+                            className="border-2"
+                            onChange={handleProblemImageChange}
+                            onClick={handleProblemImageClick}
+                        />
+                        <Button
+                            variant="outlined"
+                            onClick={handleProblemImageUpload}
+                        >
+                            {uploadProblemImageLoading ? "Uploading" : "Upload"}
+                        </Button>
+                    </div>
+                }
+            />
+            <br />
+            <Fields
+                name="solution"
                 inputElement={
                     <div className="space-x-4">
                         <input

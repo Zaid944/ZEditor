@@ -24,6 +24,7 @@
         "@zeditor/common": "1.0.0",
         "antd": "^5.23.1",
         "axios": "^1.7.9",
+        "js-base64": "^3.7.7",
         "js-cookie": "^3.0.5",
         "primeicons": "^7.0.0",
         "primereact": "^10.9.1",

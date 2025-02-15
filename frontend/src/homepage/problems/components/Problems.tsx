@@ -10,7 +10,7 @@ export const Problems: React.FC = () => {
         const cookie = Cookies.get("authToken");
         try {
             const res = await axios.get(
-                "http://localhost:5000/problemset/v1/allProblems",
+                "http://localhost:5001/problemset/v1/allProblems",
                 {
                     headers: {
                         Authorization: cookie,

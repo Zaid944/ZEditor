@@ -17,17 +17,24 @@ import { useParams } from "react-router-dom";
 }
  */
 import { Editor, EditorProps } from "@monaco-editor/react";
-import { problemType } from "@zeditor/common";
+import {
+    problemType,
+    solveProblemHelperType,
+    solveProblemType,
+} from "@zeditor/common";
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Button, List, ListItem } from "@mui/material";
+import toast from "react-hot-toast";
+import { Base64 } from "js-base64";
 
 const TypedEditor = Editor as React.ComponentType<EditorProps>;
 type LanguageType = {
     displayName: string;
     language: string;
     value: string;
+    language_id: number;
 };
 export const SolveProblem: React.FC = () => {
     const params = useParams();
@@ -38,11 +45,13 @@ export const SolveProblem: React.FC = () => {
             displayName: "cpp",
             language: "cpp",
             value: "cpp default",
+            language_id: 105,
         },
         {
             displayName: "java",
             language: "java",
             value: "java default",
+            language_id: 91,
         },
     ];
 
@@ -55,26 +64,120 @@ export const SolveProblem: React.FC = () => {
     const [inputValue, setInputValue] = useState("");
     const [outputValue, setOutputValue] = useState("");
 
+    console.log("inputValue", inputValue);
+    console.log("editorValue", editorValue);
+
     function handleClick() {
         setMenuVisible(!menuVisible);
     }
 
     function handleEditorChange(v: string | undefined) {
-        console.log(v);
+        setEditorValue(v);
     }
 
-    const getProblem = useCallback(async () => {
-        const cookie = Cookies.get("authToken");
+    function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+        setInputValue(e.target.value);
+    }
+
+    function handleOutputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+        setOutputValue(e.target.value);
+    }
+
+    async function handleProblemRun() {
+        /**{
+    "submissions": [{
+        "source_code": "I2luY2x1ZGUgPGlvc3RyZWFtPgp1c2luZyBuYW1lc3BhY2Ugc3RkOwppbnQgbWFpbigpIHsKICAgIGNvdXQ8PCJIZWxsbyBXb3JsZCEiOwp9Cg==",
+        "language_id": 105,
+        "input": ""
+    }]
+} */
+        const solveProblemReqBody: solveProblemType = {
+            submissions: [
+                {
+                    stdin: Base64.encode(inputValue),
+                    source_code: Base64.encode(editorValue),
+                    language_id: languagesList[languagesListIdx].language_id,
+                },
+            ],
+        };
+
+        console.log("solveProblemReqBody", solveProblemReqBody);
+
         try {
-            const res = await axios.get(
-                `http://localhost:5000/problemset/v1/problem/${problem_id}`,
+            const cookie = Cookies.get("authToken");
+            const response = await axios.post(
+                "http://localhost:5001/problemset/v1/solveProblem",
+                solveProblemReqBody,
                 {
                     headers: {
                         Authorization: cookie,
                     },
                 }
             );
-            console.log(res);
+
+            console.log("solve problem response is: ", response);
+            if (
+                response.data.submissionResponse.submissions[0].status.id === 3
+            ) {
+                toast.success("problem submitted");
+                setOutputValue(
+                    Base64.decode(
+                        response.data.submissionResponse.submissions[0].stdout
+                    )
+                );
+            } else {
+                console.log("reached here");
+                toast.error("problem not submitted");
+            }
+        } catch (err) {
+            toast.error("problem not submitted");
+            console.log("solve problem error", err);
+        }
+    }
+
+    async function handleProblemSubmit() {
+        /**
+         * url: z.string(),
+    source_code: z.string(),
+    language_id: z.number(),
+         */
+        const submitProblemReqBody: solveProblemHelperType = {
+            url: problem.final_tc,
+            source_code: Base64.encode(inputValue),
+            language_id: languagesList[languagesListIdx].language_id,
+        };
+
+        try {
+            const cookie = Cookies.get("authToken");
+            const response = await axios.post(
+                "http://localhost:5001/problemset/v1/solveProblem?file=true",
+                submitProblemReqBody,
+                {
+                    headers: {
+                        Authorization: cookie,
+                    },
+                }
+            );
+
+            console.log("submit problem response is: ", response);
+        } catch (err) {
+            toast.error("not able to submit problem");
+            console.log(err);
+        }
+    }
+
+    const getProblem = useCallback(async () => {
+        const cookie = Cookies.get("authToken");
+        try {
+            const res = await axios.get(
+                `http://localhost:5001/problemset/v1/problem/${problem_id}`,
+                {
+                    headers: {
+                        Authorization: cookie,
+                    },
+                }
+            );
+            console.log("problem is: ", res);
             setProblem(res.data.problem);
         } catch (err) {
             console.log("frontend setProblem error", err);
@@ -196,6 +299,7 @@ export const SolveProblem: React.FC = () => {
                     <div className="top-[28px] right-[600px] absolute z-10 min-w-[180px] overflow-auto rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg shadow-sm focus:outline-none">
                         {languagesList.map((language, index) => (
                             <div
+                                key={index}
                                 onClick={() => {
                                     console.log(index);
                                     setLanguagesListIdx(index);
@@ -223,18 +327,29 @@ export const SolveProblem: React.FC = () => {
                 <div>
                     <div className="flex justify-between">
                         <div className="w-[20%]">Input</div>
-                        <textarea className="w-[80%] border-2 border-black" />
+                        <textarea
+                            onChange={handleInputChange}
+                            className="w-[80%] border-2 border-black"
+                        />
                     </div>
                     <br />
                     <div className="flex justify-between">
                         <div className="w-[20%]">Output</div>
-                        <textarea className="w-[80%] border-2 border-black" />
+                        <textarea
+                            onChange={handleOutputChange}
+                            value={outputValue}
+                            className="w-[80%] border-2 border-black"
+                        />
                     </div>
                 </div>
                 <br />
                 <div className="w-[20%] flex justify-between">
-                    <Button color="success">Submit</Button>
-                    <Button color="primary">Run</Button>
+                    <Button color="success" onClick={handleProblemSubmit}>
+                        Submit
+                    </Button>
+                    <Button color="primary" onClick={handleProblemRun}>
+                        Run
+                    </Button>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@ export function useFile() {
         const imageData = new FormData();
         if (file) imageData.append("my_file", file);
         const res = await axios.post(
-            "http://localhost:5000/file/v1/upload",
+            "http://localhost:5001/file/v1/upload",
             imageData
         );
         console.log(res);

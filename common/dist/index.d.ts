@@ -177,34 +177,34 @@ export declare const updateProblemSchema: z.ZodObject<{
 export type updateProblemType = z.infer<typeof updateProblemSchema>;
 export declare const solveProblemSchema: z.ZodObject<{
     submissions: z.ZodArray<z.ZodObject<{
-        source_code: z.ZodString;
-        input: z.ZodString;
-        expected_output: z.ZodString;
-        language_id: z.ZodNumber;
+        source_code: z.ZodOptional<z.ZodString>;
+        stdin: z.ZodOptional<z.ZodString>;
+        expected_output: z.ZodOptional<z.ZodString>;
+        language_id: z.ZodOptional<z.ZodNumber>;
     }, "strip", z.ZodTypeAny, {
-        input: string;
-        source_code: string;
-        expected_output: string;
-        language_id: number;
+        source_code?: string | undefined;
+        stdin?: string | undefined;
+        expected_output?: string | undefined;
+        language_id?: number | undefined;
     }, {
-        input: string;
-        source_code: string;
-        expected_output: string;
-        language_id: number;
+        source_code?: string | undefined;
+        stdin?: string | undefined;
+        expected_output?: string | undefined;
+        language_id?: number | undefined;
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
     submissions: {
-        input: string;
-        source_code: string;
-        expected_output: string;
-        language_id: number;
+        source_code?: string | undefined;
+        stdin?: string | undefined;
+        expected_output?: string | undefined;
+        language_id?: number | undefined;
     }[];
 }, {
     submissions: {
-        input: string;
-        source_code: string;
-        expected_output: string;
-        language_id: number;
+        source_code?: string | undefined;
+        stdin?: string | undefined;
+        expected_output?: string | undefined;
+        language_id?: number | undefined;
     }[];
 }>;
 export type solveProblemType = z.infer<typeof solveProblemSchema>;
@@ -289,5 +289,12 @@ export declare const problemSchemaObj: {
     readonly difficulty: {
         readonly type: StringConstructor;
     };
+    readonly solution: {
+        readonly type: StringConstructor;
+    };
 };
 export type problemType = InferRawDocType<typeof problemSchemaObj>;
+export declare const codeStatus: {
+    id: number;
+    description: string;
+}[];

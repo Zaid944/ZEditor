@@ -11,9 +11,13 @@ export type Judge0Submissions = {
     submissions: Judge0Submission[];
 };
 
+export type Judge0Submit_POST_Response = {
+    token: string;
+};
+
 export async function Judge0Submit_POST(
     submissionsParam: Judge0Submissions
-): Promise<string[] | null> {
+): Promise<Judge0Submit_POST_Response[] | null> {
     try {
         const response = await axios.post(
             `${process.env.JUDGE0_BASE_API}/submissions/batch?base64_encoded=true`,
@@ -38,7 +42,7 @@ export async function Judge0Submit_GET(tokens: string[] | null) {
 
         const tokenParams = tokens.join();
         const response = await axios.get(
-            `${process.env.JUDGE0_BASE_API}/submissions?tokens=${tokenParams}&base64_encoded=true`,
+            `${process.env.JUDGE0_BASE_API}/submissions/batch?tokens=${tokenParams}&base64_encoded=true`,
             {
                 headers: {
                     "X-RapidAPI-Key": process.env.X_RAPID_API_KEY,

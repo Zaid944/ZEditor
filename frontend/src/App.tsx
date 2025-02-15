@@ -7,6 +7,7 @@ import { Signin } from "./auth/Signin/components/Signin";
 import { Signup } from "./auth/Signup/components/Signup";
 import { CreateProblems } from "./problems/crud_problem/components/CreateProblems";
 import { SolveProblem } from "./problems/solve_problem/components/SolveProblem";
+import { Toaster } from "react-hot-toast";
 
 function App() {
     const routes = [
@@ -52,6 +53,8 @@ function App() {
                     ))}
                 </Routes>
             </BrowserRouter>
+            {/* for showing toast at global level */}
+            <Toaster />
         </>
     );
 }
