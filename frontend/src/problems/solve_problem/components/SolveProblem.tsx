@@ -143,9 +143,11 @@ export const SolveProblem: React.FC = () => {
          */
         const submitProblemReqBody: solveProblemHelperType = {
             url: problem.final_tc,
-            source_code: Base64.encode(inputValue),
+            source_code: Base64.encode(editorValue),
             language_id: languagesList[languagesListIdx].language_id,
         };
+
+        console.log("submitProblemReqBody", submitProblemReqBody);
 
         try {
             const cookie = Cookies.get("authToken");

@@ -8,6 +8,9 @@ import { Signup } from "./auth/Signup/components/Signup";
 import { CreateProblems } from "./problems/crud_problem/components/CreateProblems";
 import { SolveProblem } from "./problems/solve_problem/components/SolveProblem";
 import { Toaster } from "react-hot-toast";
+import { CreateRoom } from "./contest/CreateRoom";
+import JoinRoom from "./contest/JoinRoom";
+import { ContestPlayground } from "./contest/ContestPlayground";
 
 function App() {
     const routes = [
@@ -38,6 +41,18 @@ function App() {
         {
             path: "/problems/:problem_id",
             element: <SolveProblem />,
+        },
+        {
+            path: "/contest/create-room",
+            element: <CreateRoom />,
+        },
+        {
+            path: "/contest/join-room",
+            element: <JoinRoom />,
+        },
+        {
+            path: "/room/:roomId",
+            element: <ContestPlayground />,
         },
     ];
     return (

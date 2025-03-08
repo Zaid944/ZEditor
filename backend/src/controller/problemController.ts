@@ -32,7 +32,9 @@ export function isZodError(err: unknown): err is ZodError {
 export async function createProblem(req: any, res: any) {
     console.log("reached create problem");
     try {
+        console.log("req.body", req.body);
         const validate = createProblemSchema.safeParse(req.body);
+
         if (!validate) {
             return res.status(StatusCodes.REQ_BODY_NOT_VALIDATED).json({
                 msg: `${CREATE_PROBLEM} req body is not validated`,
@@ -140,9 +142,10 @@ export async function getProblem(req: any, res: any) {
 // language_id
 export async function solveProblem(req: any, res: any) {
     try {
-        console.log("reached here");
+        console.log("reached here in solveProblem", req.body);
         const validate = solveProblemSchema.safeParse(req.body);
-        if (!validate) {
+        console.log("validate is: ", validate);
+        if (!validate.success) {
             return res.status(StatusCodes.REQ_BODY_NOT_VALIDATED).json({
                 msg: `${SOLVE_PROBLEM} req body not validated`,
             });
@@ -182,13 +185,15 @@ export async function solveProblem(req: any, res: any) {
             console.log("submissionResponse", submissionResponse);
         }
 
-        console.log("submissionResponse", submissionResponse);
+        console.log("final submissionResponse", submissionResponse);
         if (!submissionResponse) {
+            console.log("reached hereeeee zaid")
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                 msg: "not able to submit",
             });
         }
 
+        console.log("reached hereeeee zaid boyyy")
         return res.status(StatusCodes.SUCCESS).json({
             msg: "problem submitted",
             submissionResponse,

@@ -1,3 +1,3 @@
-export function Contest(){
-    return <></>
+export function Contest() {
+    return <></>;
 }

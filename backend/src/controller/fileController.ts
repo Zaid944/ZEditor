@@ -38,7 +38,7 @@ export async function ReadFile(req: any, res: any) {
         console.log("[debug] url: ", url);
         const resp = await got(url);
         const file = resp.body;
-        console.log("[debug] file: ", file);
+        console.log("[debug] file: ", file)
         return res.status(StatusCodes.SUCCESS).json({
             file,
         });

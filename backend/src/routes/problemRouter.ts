@@ -22,9 +22,10 @@ problemRouter.route("/problem/:problemId").get(getProblem);
 problemRouter.use((req, res, next) => {
     if (req.query.file) {
         console.log("reached in the middleware");
-        SolveProblemHelper(req, res, next);
+        SolveProblemHelper(req, res, next).then(next);
+    } else {
+        next();
     }
-    next();
 });
 problemRouter.route("/solveProblem").post(solveProblem);
 

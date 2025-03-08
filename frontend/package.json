@@ -33,7 +33,9 @@
         "react-hot-toast": "^2.5.1",
         "react-router-dom": "^7.1.1",
         "react-toastify": "^11.0.3",
-        "styled-components": "^6.1.14"
+        "socket.io-client": "^4.8.1",
+        "styled-components": "^6.1.14",
+        "uuid": "^11.1.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.17.0",
