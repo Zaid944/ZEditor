@@ -11,6 +11,9 @@ import { Toaster } from "react-hot-toast";
 import { CreateRoom } from "./contest/CreateRoom";
 import JoinRoom from "./contest/JoinRoom";
 import { ContestPlayground } from "./contest/ContestPlayground";
+import { SocketContext, socket } from "./context/socket";
+import { LeaderBoard } from "./contest/LeaderBoard";
+import { useState } from "react";
 
 function App() {
     const routes = [
@@ -54,9 +57,19 @@ function App() {
             path: "/room/:roomId",
             element: <ContestPlayground />,
         },
+        {
+            path: "/room/:roomId/leaderboard",
+            element: <LeaderBoard />,
+        },
     ];
+    const [closeContest, setCloseContest] = useState(false);
+
+    socket.on("close-contest", () => {
+        setCloseContest(true);
+    });
+
     return (
-        <>
+        <SocketContext.Provider value={{ socket, closeContest }}>
             <BrowserRouter>
                 <Routes>
                     {routes.map((route, key) => (
@@ -70,7 +83,7 @@ function App() {
             </BrowserRouter>
             {/* for showing toast at global level */}
             <Toaster />
-        </>
+        </SocketContext.Provider>
     );
 }
 

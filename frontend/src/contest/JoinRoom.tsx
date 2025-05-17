@@ -20,6 +20,7 @@ export default function JoinRoom() {
 
     const handleClick = (e) => {
         e.preventDefault();
+        localStorage.setItem("username", username);
         socket.emit("join-room", { username: username, roomid: roomid });
         navigate(`/room/${roomid}`);
     };
@@ -27,7 +28,7 @@ export default function JoinRoom() {
     return (
         <div>
             <h2>Join Room</h2>
-            <div>
+            <div> 
                 <label htmlFor="username">Username</label>
                 <input
                     type="text"

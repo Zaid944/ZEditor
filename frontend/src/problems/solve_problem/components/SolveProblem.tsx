@@ -30,7 +30,7 @@ import toast from "react-hot-toast";
 import { Base64 } from "js-base64";
 
 const TypedEditor = Editor as React.ComponentType<EditorProps>;
-type LanguageType = {
+export type LanguageType = {
     displayName: string;
     language: string;
     value: string;
