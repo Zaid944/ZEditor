@@ -1,10 +1,13 @@
-import { Button } from "@mui/material/";
+// import { Button } from "@mui/material/";
+import { Button } from "antd";
+import { Button as ButtonNew } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { CloudUpload } from "@mui/icons-material";
 import { useReducer, useState } from "react";
 import axios from "axios";
-import { Toast } from "../../../common/Toast";
+import toast from "react-hot-toast";
+// import { Toast } from "../../../common/Toast";
 import {
     SignupActionType,
     signupInitialState,
@@ -16,6 +19,7 @@ import {
 } from "../reducers/signUpToastReducer";
 import Cookies from "js-cookie";
 import { useFile } from "../../../common/hooks/useFile";
+import { Input } from "antd";
 
 const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -97,6 +101,7 @@ export const Signup: React.FC = () => {
                 e.target.files[0]
             );
             setSelectImageToast(true);
+            toast.success("profile image selected");
         }
     }
 
@@ -113,6 +118,7 @@ export const Signup: React.FC = () => {
         setRateLimit(false);
         const url = await uploadFile(profileImage);
         setUploadImageToast(true);
+        toast.success("profile image uploaded");
         setUploadImageLoading(false);
         signupStateDispatch({
             type: SignupActionType.SET_PROFILE_IMAGE_URL,
@@ -131,6 +137,7 @@ export const Signup: React.FC = () => {
         //TODO: mongodb not able to store data -> 404, error
         if (res.data.validate) {
             if (!res.data.validate.success) {
+                toast.error("signup failed");
                 signupToastStateDispatch({
                     type: SignupToastActionType.SET_VALUE,
                     payload: {
@@ -140,6 +147,7 @@ export const Signup: React.FC = () => {
                     },
                 });
             } else {
+                toast.success("signup successfull");
                 signupToastStateDispatch({
                     type: SignupToastActionType.SET_VALUE,
                     payload: {
@@ -158,16 +166,22 @@ export const Signup: React.FC = () => {
     return (
         <>
             <div className="w-screen h-screen flex h-screen">
-                <div className="h-[90%] mt-10 w-1/2 border border-2 mx-auto pt-10">
+                <div className="h-[90%] mt-10 w-1/2 mx-auto pt-10">
                     <div className="text-xl text-center mt-3">SignUp</div>
                     {/* text-center -> alternate */}
                     <div className="mt-10 text-center">
                         {fields.map((field, index) => (
-                            <div key={index} className="mb-10">
-                                <label htmlFor={`yay ${index}`}>
+                            <div
+                                key={index}
+                                className="mb-10 flex justify-between"
+                            >
+                                <label
+                                    htmlFor={`yay ${index}`}
+                                    className="ml-32"
+                                >
                                     {field.label}
                                 </label>
-                                <input
+                                <Input
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => {
@@ -180,15 +194,16 @@ export const Signup: React.FC = () => {
                                         });
                                     }}
                                     id={`yay ${index}`}
-                                    className="w-1/2 border-2"
+                                    className="w-1/2 border-2 mr-20"
                                     type={field.type}
                                 />
                             </div>
                         ))}
                         <div className="mb-10 flex w-full justify-center">
                             <div className="mr-14">
-                                <Button
+                                <ButtonNew
                                     component="label"
+                                    color="success"
                                     role={undefined}
                                     variant="outlined"
                                 >
@@ -200,8 +215,8 @@ export const Signup: React.FC = () => {
                                         onClick={handleImageInputClick}
                                         onChange={handleImageInputChange}
                                     />
-                                </Button>
-                                <Toast
+                                </ButtonNew>
+                                {/* <Toast
                                     open={selectImageToast}
                                     //@ts-ignore
                                     setOpen={setSelectImageToast}
@@ -210,19 +225,20 @@ export const Signup: React.FC = () => {
                                     content="profile image selected"
                                     horizontal="center"
                                     vertical="top"
-                                />
+                                /> */}
                             </div>
                             <div>
                                 <Button
-                                    variant="outlined"
-                                    startIcon={<CloudUpload />}
+                                    color="cyan"
+                                    variant="filled"
+                                    icon={<CloudUpload />}
                                     onClick={handleImageUpload}
                                 >
                                     {uploadImageLoading
                                         ? "Uploading..."
                                         : "Upload"}
                                 </Button>
-                                <Toast
+                                {/* <Toast
                                     open={uploadImageToast}
                                     //@ts-ignore
                                     setOpen={setUploadImageToast}
@@ -231,25 +247,32 @@ export const Signup: React.FC = () => {
                                     content="image uploaded"
                                     horizontal="center"
                                     vertical="top"
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>
                     <div className="flex justify-center mb-10">
-                        <Button variant="outlined" onClick={handleSignUp}>
+                        <Button
+                            color="cyan"
+                            variant="filled"
+                            onClick={handleSignUp}
+                        >
                             Sign Up
                         </Button>
                     </div>
                     <div className="flex justify-center">
-                        <div className="mr-2">Already have an account ?</div>
+                        <div className="mr-2">Already have an account ? </div>
                         <div>
-                            <Link to="/signin" className="underline">
-                                Signin
+                            <Link
+                                to="/signin"
+                                className="underline text-blue-600"
+                            >
+                                SignIn
                             </Link>
                         </div>
                     </div>
                 </div>
-                <Toast
+                {/* <Toast
                     open={signupToastState.open!}
                     //@ts-ignore
                     setOpen={signupToastStateDispatch}
@@ -258,7 +281,7 @@ export const Signup: React.FC = () => {
                     content={signupToastState.content}
                     horizontal="center"
                     vertical="top"
-                />
+                /> */}
             </div>
         </>
     );

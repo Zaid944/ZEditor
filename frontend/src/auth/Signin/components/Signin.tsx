@@ -1,8 +1,9 @@
-import { Button } from "@mui/material/";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
 import { useReducer, useState } from "react";
 import axios from "axios";
-import { Toast } from "../../../common/Toast";
+// import { Toast } from "../../../common/Toast";
+import toast from "react-hot-toast";
 import {
     SigninToastActionType,
     SigninToastReducer,
@@ -10,6 +11,7 @@ import {
 import { SignInToastMode } from "@zeditor/common";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Input } from "antd";
 
 export const Signin: React.FC = () => {
     const [signInToastState, signInToastStateDispatch] = useReducer(
@@ -48,6 +50,7 @@ export const Signin: React.FC = () => {
                         content: "user signed in successfully",
                     },
                 });
+                toast.success("signin successfull");
 
                 //TODO: set cookie from backend
                 Cookies.set("authToken", `Bearer ${res.data.token}`);
@@ -62,6 +65,7 @@ export const Signin: React.FC = () => {
                         content: "user not signed up",
                     },
                 });
+                toast.error("signin failed");
                 break;
             case SignInToastMode.REQ_BODY_NOT_VALIDATED:
                 signInToastStateDispatch({
@@ -72,6 +76,7 @@ export const Signin: React.FC = () => {
                         content: "req body not validated",
                     },
                 });
+                toast.error("signin failed");
                 break;
             case SignInToastMode.PASSWORD_NOT_VALIDATED:
                 signInToastStateDispatch({
@@ -82,6 +87,7 @@ export const Signin: React.FC = () => {
                         content: "password not correct",
                     },
                 });
+                toast.error("signin failed");
                 break;
             case SignInToastMode.INTERNAL_SERVER_ERROR:
                 signInToastStateDispatch({
@@ -92,35 +98,40 @@ export const Signin: React.FC = () => {
                         content: "internal server error",
                     },
                 });
+                toast.error("signin failed");
         }
     }
 
     return (
         <>
             <div className="w-screen h-screen flex h-screen">
-                <div className="m-auto h-1/2 w-1/2 border border-2 pt-10">
+                <div className="m-auto h-1/2 w-1/2 pt-10">
                     <div className="text-xl text-center mt-3">SignIn</div>
                     {/* text-center -> alternate */}
                     <div className="mt-10 text-center">
-                        <div className="mb-10">
-                            <label htmlFor="email">Email</label>
-                            <input
+                        <div className="mb-10 flex justify-between">
+                            <label htmlFor="email" className="ml-36">
+                                Email
+                            </label>
+                            <Input
                                 id="email"
-                                className="w-1/2 border-2"
+                                className="w-1/2 border-2 mr-22"
                                 type="email"
                                 onChange={handleEmailIdChange}
                             />
                         </div>
-                        <div className="mb-10">
-                            <label htmlFor="password">Password</label>
-                            <input
+                        <div className="mb-10 flex justify-between">
+                            <label htmlFor="password" className="ml-36">
+                                Password
+                            </label>
+                            <Input
                                 id="password"
-                                className="w-1/2 border-2"
+                                className="w-1/2 border-2 mr-22"
                                 type="password"
                                 onChange={handlePasswordChange}
                             />
                         </div>
-                        <Toast
+                        {/* <Toast
                             open={signInToastState.open!}
                             //@ts-ignore
                             setOpen={signInToastStateDispatch}
@@ -129,17 +140,24 @@ export const Signin: React.FC = () => {
                             content={signInToastState.content}
                             horizontal="center"
                             vertical="top"
-                        />
+                        /> */}
                     </div>
                     <div className="flex justify-center mb-10">
-                        <Button variant="outlined" onClick={handleSignIn}>
+                        <Button
+                            variant="filled"
+                            color="cyan"
+                            onClick={handleSignIn}
+                        >
                             Sign In
                         </Button>
                     </div>
                     <div className="flex justify-center">
                         <div className="mr-2">Not have an account ?</div>
                         <div>
-                            <Link to="/signup" className="underline">
+                            <Link
+                                to="/signup"
+                                className="underline text-blue-600"
+                            >
                                 SignUp
                             </Link>
                         </div>
