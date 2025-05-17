@@ -100,9 +100,26 @@ export async function deleteProblem(req: any, res: any) {
     }
 }
 
+/*
+count, difficulty
+*/
+
 export async function getAllProblems(req: any, res: any) {
     try {
-        const problems: Document<problemType>[] = await problemModel.find();
+        const { count, difficulty } = req.query;
+        console.log("count", count);
+        console.log("difficulty", difficulty);
+        let problems: Document<problemType>[] = await problemModel.find();
+        if (difficulty) {
+            problems = await problemModel.find({ difficulty: difficulty });
+        }
+        if (count) {
+            problems = problems.slice(
+                0,
+                Math.min(problems.length, parseInt(count))
+            );
+        }
+        // console.log("problems: ", problems);
         return res.status(StatusCodes.SUCCESS).json({
             msg: "all problems",
             problems,
@@ -151,52 +168,55 @@ export async function solveProblem(req: any, res: any) {
             });
         }
 
-        const submissionTokens = await Judge0Submit_POST(req.body);
-        console.log("submissionToken", submissionTokens);
-        const tokens = [];
-        if (submissionTokens) {
-            for (let i = 0; i < submissionTokens?.length; i++) {
-                tokens.push(submissionTokens[i].token);
-            }
-        }
-        let submissionResponse = await Judge0Submit_GET(tokens);
-        let retry: boolean = true;
-        while (retry) {
-            let loop: boolean = true;
-            console.log(
-                "submissionResponse.submissions",
-                submissionResponse.submissions
-            );
-            for (let i = 0; i < submissionResponse.submissions.length; i++) {
-                console.log(
-                    "submissionResponse.submissions[i].status.id",
-                    submissionResponse.submissions[i].status.id
-                );
-                if (
-                    submissionResponse.submissions[i].status.id === 1 ||
-                    submissionResponse.submissions[i].status.id === 2
-                ) {
-                    submissionResponse = await Judge0Submit_GET(tokens);
-                    loop = false;
-                }
-            }
-            if (loop) retry = false;
+        console.log("solveproblem debug", req.body);
 
-            console.log("submissionResponse", submissionResponse);
-        }
+        const response = await Judge0Submit_POST(req.body);
+        console.log("submissionToken", response);
+        // const tokens = [];
+        // if (submissionTokens) {
+        //     for (let i = 0; i < submissionTokens?.length; i++) {
+        //         tokens.push(submissionTokens[i].token);
+        //     }
+        // }
+        // console.log("debug token", tokens);
+        // let submissionResponse = await Judge0Submit_GET(tokens);
+        // let retry: boolean = true;
+        // while (retry) {
+        //     let loop: boolean = true;
+        //     console.log(
+        //         "submissionResponse.submissions",
+        //         submissionResponse.submissions
+        //     );
+        //     for (let i = 0; i < submissionResponse.submissions.length; i++) {
+        //         console.log(
+        //             "submissionResponse.submissions[i].status.id",
+        //             submissionResponse.submissions[i].status.id
+        //         );
+        //         if (
+        //             submissionResponse.submissions[i].status.id === 1 ||
+        //             submissionResponse.submissions[i].status.id === 2
+        //         ) {
+        //             submissionResponse = await Judge0Submit_GET(tokens);
+        //             loop = false;
+        //         }
+        //     }
+        //     if (loop) retry = false;
 
-        console.log("final submissionResponse", submissionResponse);
-        if (!submissionResponse) {
-            console.log("reached hereeeee zaid")
+        //     console.log("submissionResponse", submissionResponse);
+        // }
+
+        console.log("final submissionResponse", response);
+        if (!response) {
+            console.log("reached hereeeee zaid");
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                 msg: "not able to submit",
             });
         }
 
-        console.log("reached hereeeee zaid boyyy")
+        console.log("reached hereeeee zaid boyyy");
         return res.status(StatusCodes.SUCCESS).json({
             msg: "problem submitted",
-            submissionResponse,
+            response,
         });
     } catch (err) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

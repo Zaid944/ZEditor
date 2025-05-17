@@ -19,6 +19,7 @@ app.use(cookieParser());
 app.use("/user/v1", userRouter);
 app.use("/problemset/v1", problemRouter);
 app.use("/file/v1", fileRouter);
+// app.use("/socket/v1", socketRouter);
 
 // all socket logic
 const server = createServer(app); // creates a node server
@@ -26,6 +27,23 @@ const io = new Server(server); // this shit creates a separate websocket server 
 
 const username_to_socket: any = {};
 const rooms: any = {};
+const scores: any = {};
+const contest: any = {};
+const contestTime: any = {};
+
+/**
+ * {
+ *  room1-1 : {
+ *         Zaid: 100
+ *          Anas : 200
+ * },
+ * room -2 : {
+ *      Anas : 1000,
+ *      Jack : 2000,
+ * }
+ * }
+ *
+ */
 
 function getUsersInRoom(roomid: any) {
     if (rooms[roomid]) {
@@ -36,9 +54,9 @@ function getUsersInRoom(roomid: any) {
 }
 
 io.on("connection", (socket: any) => {
-    socket.emit("welcome", { msg: "welcome to room" });
     socket.on("join-room", (payload: any) => {
-        console.log("entered room");
+        console.log("socket id on server side", socket.id);
+        // console.log("entered room");
         socket.roomid = payload.roomid;
         socket.username = payload.username;
 
@@ -47,14 +65,64 @@ io.on("connection", (socket: any) => {
 
         if (!rooms[payload.roomid]) {
             rooms[payload.roomid] = [];
+            scores[payload.roomid] = {};
+            contest[payload.roomid] = false;
         }
 
         rooms[payload.roomid].push(payload.username);
+        scores[payload.roomid][payload.username] = 0;
 
-        console.log(`${payload.username} joined ${payload.roomid}`);
+        // console.log(`${payload.username} joined ${payload.roomid}`);
+        // console.log("debugged socket");
         // console.log(`the user socket id is: ${socket.id}`);
         const usersInRoom = getUsersInRoom(payload.roomid);
-        io.to(socket.roomid).emit("all users", { users: usersInRoom });
+        // console.log("yayy");
+        // console.log(socket.roomid);
+        console.log("reached here");
+        console.log("users in room", usersInRoom);
+        console.log("socket room id", socket.roomid);
+        io.to(payload.roomid).emit("allusers", { users: usersInRoom });
+    });
+
+    socket.on("get-users-in-room", (payload: any) => {
+        const usersInRoom = getUsersInRoom(payload.roomid);
+        socket.emit("allusers", { users: usersInRoom });
+    });
+
+    socket.on("update-score", (payload: any) => {
+        scores[payload.roomid][payload.username] = payload.count;
+    });
+
+    socket.on("get-contest-score", (payload: any) => {
+        socket.emit("contest-score", { contest_score: scores[payload.roomid] });
+    });
+
+    socket.on("close-contest", (payload: any) => {
+        console.log("close-contest event fired");
+        contest[payload.roomid] = true;
+        // io.to(payload.roomid).emit("close-contest");
+    });
+
+    socket.on("get-close-contest", (payload: any) => {
+        console.log("get-close-contest event fired");
+        io.to(payload.roomid).emit("close-contest-value", {
+            value: contest[payload.roomid],
+        });
+    });
+
+    socket.on("store-time", (payload: any) => {
+        if (!contestTime[payload.roomid])
+            contestTime[payload.roomid] = payload.time;
+        contestTime[payload.roomid] = Math.min(
+            contestTime[payload.roomid],
+            payload.time
+        );
+    });
+
+    socket.on("get-store-time", (payload: any) => {
+        io.to(payload.roomid).emit("time", {
+            time: Math.max(0, contestTime[payload.roomid]),
+        });
     });
 
     // socket.on("update-code", (payload: any) => {

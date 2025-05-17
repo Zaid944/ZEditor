@@ -20,7 +20,7 @@ export async function Judge0Submit_POST(
 ): Promise<Judge0Submit_POST_Response[] | null> {
     try {
         const response = await axios.post(
-            `${process.env.JUDGE0_BASE_API}/submissions/batch?base64_encoded=true`,
+            `${process.env.JUDGE0_BASE_API}/submissions/batch?base64_encoded=true&wait=true`,
             submissionsParam,
             {
                 headers: {
@@ -28,7 +28,7 @@ export async function Judge0Submit_POST(
                 },
             }
         );
-        console.log(response.data);
+        console.log("broken: ", response.data);
         return response.data;
     } catch (err) {
         console.log("judge0 submit post", err);
@@ -41,6 +41,7 @@ export async function Judge0Submit_GET(tokens: string[] | null) {
         if (!tokens) return null;
 
         const tokenParams = tokens.join();
+        console.log("tokenParams: ", tokenParams);
         const response = await axios.get(
             `${process.env.JUDGE0_BASE_API}/submissions/batch?tokens=${tokenParams}&base64_encoded=true`,
             {
@@ -49,6 +50,8 @@ export async function Judge0Submit_GET(tokens: string[] | null) {
                 },
             }
         );
+
+        console.log("zaid response is", response.data);
 
         return response.data;
     } catch (err) {

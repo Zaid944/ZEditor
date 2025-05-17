@@ -20,9 +20,10 @@ problemRouter.route("/allProblems").get(getAllProblems);
 problemRouter.route("/problem/:problemId").get(getProblem);
 
 problemRouter.use((req, res, next) => {
+    console.log("req.query zaid is: ", req.query);
     if (req.query.file) {
         console.log("reached in the middleware");
-        SolveProblemHelper(req, res, next).then(next);
+        SolveProblemHelper(req, res, next);
     } else {
         next();
     }
