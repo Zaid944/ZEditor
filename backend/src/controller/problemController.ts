@@ -172,14 +172,14 @@ export async function solveProblem(req: any, res: any) {
 
         const response = await Judge0Submit_POST(req.body);
         console.log("submissionToken", response);
-        // const tokens = [];
-        // if (submissionTokens) {
-        //     for (let i = 0; i < submissionTokens?.length; i++) {
-        //         tokens.push(submissionTokens[i].token);
-        //     }
-        // }
-        // console.log("debug token", tokens);
-        // let submissionResponse = await Judge0Submit_GET(tokens);
+        const tokens = [];
+        if (response) {
+            for (let i = 0; i < response?.length; i++) {
+                tokens.push(response[i].token);
+            }
+        }
+        console.log("debug token", tokens);
+        let submissionResponse = await Judge0Submit_GET(tokens);
         // let retry: boolean = true;
         // while (retry) {
         //     let loop: boolean = true;
@@ -205,8 +205,8 @@ export async function solveProblem(req: any, res: any) {
         //     console.log("submissionResponse", submissionResponse);
         // }
 
-        console.log("final submissionResponse", response);
-        if (!response) {
+        console.log("final submissionResponse", submissionResponse);
+        if (!submissionResponse) {
             console.log("reached hereeeee zaid");
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
                 msg: "not able to submit",
@@ -216,11 +216,40 @@ export async function solveProblem(req: any, res: any) {
         console.log("reached hereeeee zaid boyyy");
         return res.status(StatusCodes.SUCCESS).json({
             msg: "problem submitted",
-            response,
+            submissionResponse,
         });
     } catch (err) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             msg: "not able to submit",
+            err,
+        });
+    }
+}
+
+export async function solveProblemGetTokenValue(req: any, res: any) {
+    try {
+        const { tokens } = req.body;
+        console.log("recursive tokens", tokens);
+        let submissionResponse = await Judge0Submit_GET(tokens);
+        console.log(
+            "get token value final submissionResponse",
+            submissionResponse
+        );
+        if (!submissionResponse) {
+            console.log("get token value reached hereeeee zaid");
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                msg: "get token value not able to submit",
+            });
+        }
+
+        console.log("reached hereeeee zaid boyyy");
+        return res.status(StatusCodes.SUCCESS).json({
+            msg: "get token value problem submitted",
+            submissionResponse,
+        });
+    } catch (err) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            msg: "get token value not able to get token value",
             err,
         });
     }

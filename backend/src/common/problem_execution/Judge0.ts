@@ -25,6 +25,7 @@ export async function Judge0Submit_POST(
             {
                 headers: {
                     "X-RapidAPI-Key": process.env.X_RAPID_API_KEY,
+                    "Content-Type": "application/json",
                 },
             }
         );
@@ -47,6 +48,7 @@ export async function Judge0Submit_GET(tokens: string[] | null) {
             {
                 headers: {
                     "X-RapidAPI-Key": process.env.X_RAPID_API_KEY,
+                    "Content-Type": "application/json",
                 },
             }
         );

@@ -81,6 +81,46 @@ export const Playground = ({
         setOutputValue(e.target.value);
     }
 
+    async function Recurse(tokens) {
+        try {
+            const cookie = Cookies.get("authToken");
+            const response = await axios.post(
+                "http://localhost:5001/problemset/v1/solveProblemGetToken",
+                { tokens: tokens },
+                {
+                    headers: {
+                        Authorization: cookie,
+                    },
+                }
+            );
+
+            console.log("solve problem response is: ", response);
+            if (
+                response.data.submissionResponse.submissions[0].status.id === 3
+            ) {
+                toast.success("problem submitted");
+                setOutputValue(
+                    Base64.decode(
+                        response.data.submissionResponse.submissions[0].stdout
+                    )
+                );
+                return;
+            } else if (
+                response.data.submissionResponse.submissions[0].status.id ===
+                    1 ||
+                response.data.submissionResponse.submissions[0].status.id === 2
+            ) {
+                console.log("reached here");
+                toast.error("problem not submitted");
+                await Recurse(tokens);
+            }
+            return;
+        } catch (err) {
+            toast.error("problem not submitted");
+            console.log("solve problem error", err);
+        }
+    }
+
     async function handleProblemRun() {
         setCount(count + 1);
         socket.emit("update-score", {
@@ -120,6 +160,16 @@ export const Playground = ({
             );
 
             console.log("solve problem response is: ", response);
+            const tokens = [];
+            for (
+                let i = 0;
+                i < response.data.submissionResponse.submissions.length;
+                i++
+            ) {
+                tokens.push(
+                    response.data.submissionResponse.submissions[i].token
+                );
+            }
             if (
                 response.data.submissionResponse.submissions[0].status.id === 3
             ) {
@@ -129,10 +179,17 @@ export const Playground = ({
                         response.data.submissionResponse.submissions[0].stdout
                     )
                 );
-            } else {
+            } else if (
+                response.data.submissionResponse.submissions[0].status.id ===
+                    1 ||
+                response.data.submissionResponse.submissions[0].status.id === 2
+            ) {
+                console.log("recursive reached");
                 console.log("reached here");
                 toast.error("problem not submitted");
+                await Recurse(tokens);
             }
+            return;
         } catch (err) {
             toast.error("problem not submitted");
             console.log("solve problem error", err);

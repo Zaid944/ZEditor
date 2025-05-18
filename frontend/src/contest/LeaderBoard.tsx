@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { SocketContext } from "../context/socket";
 import { useState } from "react";
+import { Card } from "antd";
 
 const LEADERBOARD = "[leaderboard]";
 
@@ -27,12 +28,23 @@ export const LeaderBoard = () => {
     }, [roomId, socket]);
 
     return (
-        <div>
-            {Object.keys(leaderboard).map((user) => (
-                <div>
-                    {user} : {leaderboard[user]}
-                </div>
-            ))}
+        <div className="w-screen h-screen">
+            <div className="h-1/2 flex items-center justify-center">
+                <Card style={{ width: "300px" }}>
+                    <div className="ml-20">Leaderboard</div>
+                    <br />
+                    {Object.keys(leaderboard)
+                        .sort((a, b) => leaderboard[b] - leaderboard[a])
+                        .map((user, index) => (
+                            <div className="flex">
+                                <div>{index})</div>
+                                <div className="ml-4">
+                                    {user} : {leaderboard[user]}
+                                </div>
+                            </div>
+                        ))}
+                </Card>
+            </div>
         </div>
     );
 };

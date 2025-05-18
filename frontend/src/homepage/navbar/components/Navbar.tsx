@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Space, Menu, GetProp, MenuProps } from "antd";
+import Cookies from "js-cookie";
 
 type Props = {
     children: JSX.Element;
@@ -42,7 +43,14 @@ export const Navbar: React.FC = () => {
             ),
             children: [
                 { key: "", label: "Profile" },
-                { key: "", label: "SignOut" },
+                {
+                    key: "",
+                    label: "SignOut",
+                    onClick: () => {
+                        Cookies.remove("authToken");
+                        window.open("/", "_self");
+                    },
+                },
             ],
         },
     ];

@@ -6,6 +6,7 @@ import {
     getAllProblems,
     getProblem,
     solveProblem,
+    solveProblemGetTokenValue,
 } from "../controller/problemController";
 import { IsAuthenticated } from "../middleware/IsAuthenticated";
 import { SolveProblemHelper } from "../middleware/SolveProblemHelper";
@@ -29,5 +30,6 @@ problemRouter.use((req, res, next) => {
     }
 });
 problemRouter.route("/solveProblem").post(solveProblem);
+problemRouter.route("/solveProblemGetToken").post(solveProblemGetTokenValue);
 
 export default problemRouter;

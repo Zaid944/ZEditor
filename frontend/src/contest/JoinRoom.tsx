@@ -1,6 +1,7 @@
 import { useState } from "react";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import { Button, Input } from "antd";
 const socket = io(import.meta.env.VITE_BACKEND_URL, {
     transports: ["websocket"],
 });
@@ -26,29 +27,35 @@ export default function JoinRoom() {
     };
 
     return (
-        <div>
-            <h2>Join Room</h2>
-            <div>
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={handleUsernameChange}
-                />
+        <div className="w-screen h-screen flex h-screen">
+            <div className="h-[90%] mt-40 w-1/2 mx-auto pt-10">
+                <h2>Join Room</h2>
+                <br />
+                <div>
+                    <label htmlFor="username">Username</label>
+                    <Input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={handleUsernameChange}
+                    />
+                </div>
+                <br />
+                <div>
+                    <label htmlFor="password">Room ID</label>
+                    <Input
+                        type="text"
+                        id="roomid"
+                        value={roomid}
+                        onChange={handleRoomidChange}
+                    />
+                </div>
+                <br />
+                <Button color="geekblue" variant="solid" onClick={handleClick}>
+                    Enter Contest
+                </Button>
+                {/* <button>Hi</button> */}
             </div>
-            <div>
-                <label htmlFor="password">Room ID</label>
-                <input
-                    type="text"
-                    id="roomid"
-                    value={roomid}
-                    onChange={handleRoomidChange}
-                />
-            </div>
-            <br />
-            <button onClick={handleClick}>Enter Contest</button>
-            {/* <button>Hi</button> */}
         </div>
     );
 }
