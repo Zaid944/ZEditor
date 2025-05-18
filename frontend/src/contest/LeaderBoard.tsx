@@ -27,12 +27,12 @@ export const LeaderBoard = () => {
     }, [roomId, socket]);
 
     return (
-        <>
+        <div>
             {Object.keys(leaderboard).map((user) => (
                 <div>
                     {user} : {leaderboard[user]}
                 </div>
             ))}
-        </>
+        </div>
     );
 };

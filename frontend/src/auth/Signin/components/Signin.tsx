@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "antd";
 import { Link } from "react-router-dom";
 import { useReducer, useState } from "react";
@@ -103,7 +104,7 @@ export const Signin: React.FC = () => {
     }
 
     return (
-        <>
+        <div>
             <div className="w-screen h-screen flex h-screen">
                 <div className="m-auto h-1/2 w-1/2 pt-10">
                     <div className="text-xl text-center mt-3">SignIn</div>
@@ -164,6 +165,6 @@ export const Signin: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };

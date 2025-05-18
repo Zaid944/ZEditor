@@ -1,10 +1,6 @@
 import { ExpandMore } from "@mui/icons-material";
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Button,
-} from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { Button } from "antd";
 import { Fields } from "../common/Fields";
 import { useReducer, useState } from "react";
 import { useFile } from "../../../../common/hooks/useFile";
@@ -132,7 +128,8 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({
                             <div className="space-x-4 flex">
                                 <Button
                                     onClick={handleImageUpload}
-                                    variant="outlined"
+                                    variant="filled"
+                                    color="cyan"
                                 >
                                     {loading ? "Uploading" : "Upload"}
                                 </Button>
@@ -176,7 +173,11 @@ export const SampleTestCase: React.FC<SampleTestCaseProps> = ({
                         }
                         right="3/4"
                     />
-                    <Button variant="outlined" onClick={handleTestCaseSubmit}>
+                    <Button
+                        variant="filled"
+                        color="cyan"
+                        onClick={handleTestCaseSubmit}
+                    >
                         Submit
                     </Button>
                 </AccordionDetails>

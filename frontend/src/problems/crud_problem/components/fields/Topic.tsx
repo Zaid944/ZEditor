@@ -1,10 +1,6 @@
 import { ExpandMore } from "@mui/icons-material";
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Button,
-} from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { Button } from "antd";
 import { testCaseType } from "@zeditor/common";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -50,7 +46,11 @@ export const Topic: React.FC<TopicProps> = ({
                         className="border-2"
                         onChange={handleTopicChange}
                     />
-                    <Button variant="outlined" onClick={handleTopicSubmit}>
+                    <Button
+                        variant="filled"
+                        color="cyan"
+                        onClick={handleTopicSubmit}
+                    >
                         Submit
                     </Button>
                 </AccordionDetails>

@@ -28,7 +28,7 @@ export default function JoinRoom() {
     return (
         <div>
             <h2>Join Room</h2>
-            <div> 
+            <div>
                 <label htmlFor="username">Username</label>
                 <input
                     type="text"

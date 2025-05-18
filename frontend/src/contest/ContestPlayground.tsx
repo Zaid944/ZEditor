@@ -156,52 +156,56 @@ export function ContestPlayground() {
     // console.log("users length", users.length.toString());
 
     return (
-        <Splitter className="h-screen">
-            <Splitter.Panel defaultSize="40%" min="20%" max="70%">
-                <Tabs
-                    onChange={(key) => {}}
-                    defaultActiveKey="1"
-                    type="card"
-                    size={size}
-                    style={{ marginBottom: 32 }}
-                    items={problems.map((problem, i) => {
-                        const id = String(i + 1);
-                        return {
-                            label: `Question ${id}`,
-                            key: id,
-                            children: <Question problem={problem} />,
-                        };
-                    })}
-                />
-            </Splitter.Panel>
-            <Splitter.Panel>
-                <Tabs
-                    onChange={(key) => {
-                        setActiveKey(key);
-                        setUsername(users[key - "1"]);
-                    }}
-                    type="card"
-                    size={size}
-                    style={{ marginBottom: 32 }}
-                    items={users.map((user, i) => {
-                        const id = String(i + 1);
-                        return {
-                            label: user,
-                            key: id,
-                            children: (
-                                <Playground
-                                    initialTime={hour * 3600 + mins * 60 + secs}
-                                    roomId={roomId}
-                                    username={username}
-                                    setCount={setCount}
-                                    count={count}
-                                />
-                            ),
-                        };
-                    })}
-                />
-            </Splitter.Panel>
-        </Splitter>
+        <div>
+            <Splitter className="h-screen">
+                <Splitter.Panel defaultSize="40%" min="20%" max="70%">
+                    <Tabs
+                        onChange={(key) => {}}
+                        defaultActiveKey="1"
+                        type="card"
+                        size={size}
+                        style={{ marginBottom: 32 }}
+                        items={problems.map((problem, i) => {
+                            const id = String(i + 1);
+                            return {
+                                label: `Question ${id}`,
+                                key: id,
+                                children: <Question problem={problem} />,
+                            };
+                        })}
+                    />
+                </Splitter.Panel>
+                <Splitter.Panel>
+                    <Tabs
+                        onChange={(key) => {
+                            setActiveKey(key);
+                            setUsername(users[key - "1"]);
+                        }}
+                        type="card"
+                        size={size}
+                        style={{ marginBottom: 32 }}
+                        items={users.map((user, i) => {
+                            const id = String(i + 1);
+                            return {
+                                label: user,
+                                key: id,
+                                children: (
+                                    <Playground
+                                        initialTime={
+                                            hour * 3600 + mins * 60 + secs
+                                        }
+                                        roomId={roomId}
+                                        username={username}
+                                        setCount={setCount}
+                                        count={count}
+                                    />
+                                ),
+                            };
+                        })}
+                    />
+                </Splitter.Panel>
+            </Splitter>
+        </div>
     );
 }
 

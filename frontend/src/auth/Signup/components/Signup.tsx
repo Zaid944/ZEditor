@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { Button } from "@mui/material/";
 import { Button } from "antd";
 import { Button as ButtonNew } from "@mui/material";
@@ -40,6 +41,9 @@ type Field = {
     stateField: string;
 };
 
+type Props = {
+    ref: any;
+};
 export const Signup: React.FC = () => {
     const [uploadFile] = useFile();
 
@@ -164,7 +168,7 @@ export const Signup: React.FC = () => {
     }
 
     return (
-        <>
+        <div>
             <div className="w-screen h-screen flex h-screen">
                 <div className="h-[90%] mt-10 w-1/2 mx-auto pt-10">
                     <div className="text-xl text-center mt-3">SignUp</div>
@@ -283,6 +287,6 @@ export const Signup: React.FC = () => {
                     vertical="top"
                 /> */}
             </div>
-        </>
+        </div>
     );
 };

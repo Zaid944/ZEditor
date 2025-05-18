@@ -1,9 +1,5 @@
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Button,
-} from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
+import { Button } from "antd";
 import { ExpandMore } from "@mui/icons-material";
 import { testCaseType } from "@zeditor/common";
 import { useState } from "react";
@@ -52,7 +48,11 @@ export const Constraint: React.FC<ConstraintProps> = ({
                         className="border-2"
                         onChange={handleConstraintChange}
                     />
-                    <Button variant="outlined" onClick={handleConstraintSubmit}>
+                    <Button
+                        variant="filled"
+                        color="cyan"
+                        onClick={handleConstraintSubmit}
+                    >
                         Submit
                     </Button>
                 </AccordionDetails>

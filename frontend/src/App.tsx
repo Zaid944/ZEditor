@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Homepage } from "./homepage/Homepage";
 import { Contest } from "./pages/Contest";
@@ -13,9 +14,36 @@ import JoinRoom from "./contest/JoinRoom";
 import { ContestPlayground } from "./contest/ContestPlayground";
 import { SocketContext, socket } from "./context/socket";
 import { LeaderBoard } from "./contest/LeaderBoard";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import BIRDS from "vanta/dist/vanta.birds.min";
+import NET from "vanta/dist/vanta.net.min";
+import * as THREE from "three";
 
 function App() {
+    // const [vantaEffect, setVantaEffect] = useState(0);
+    // const vantaRef = useRef(null);
+
+    // useEffect(() => {
+    //     if (!vantaEffect) {
+    //         setVantaEffect(
+    //             NET({
+    //                 el: vantaRef.current,
+    //                 THREE: THREE,
+    //                 mouseControls: true,
+    //                 touchControls: true,
+    //                 gyroControls: false,
+    //                 minHeight: 600.0,
+    //                 minWidth: 600.0,
+    //                 scale: 1.0,
+    //                 scaleMobile: 1.0,
+    //             })
+    //         );
+    //     }
+    //     return () => {
+    //         if (vantaEffect) vantaEffect.destroy();
+    //     };
+    // }, [vantaEffect]);
+
     const routes = [
         {
             path: "/",

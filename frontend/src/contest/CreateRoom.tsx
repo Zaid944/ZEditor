@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useContext, useState } from "react";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";

@@ -11,9 +11,9 @@ export function Homepage() {
         }
     });
     return (
-        <>
+        <div>
             <Navbar />
             <Problems />
-        </>
+        </div>
     );
 }

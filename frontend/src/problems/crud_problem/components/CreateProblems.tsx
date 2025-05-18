@@ -1,4 +1,6 @@
-import { Button, IconButton } from "@mui/material";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IconButton } from "@mui/material";
+import { Button } from "antd";
 import { Topic } from "./fields/Topic";
 import { Fields } from "./common/Fields";
 import { SampleTestCase } from "./fields/SampleTestCase";
@@ -23,7 +25,12 @@ import BackupIcon from "@mui/icons-material/Backup";
 import toast, { Toaster } from "react-hot-toast";
 import axios, { isAxiosError } from "axios";
 import Cookies from "js-cookie";
+import { Input, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
+type Props = {
+    ref: any;
+};
 export const CreateProblems: React.FC = () => {
     const [uploadFile] = useFile();
 
@@ -236,7 +243,7 @@ export const CreateProblems: React.FC = () => {
             <Fields
                 name="title"
                 inputElement={
-                    <input
+                    <Input
                         type="text"
                         className="border-2"
                         onChange={handleTitleChange}
@@ -247,7 +254,7 @@ export const CreateProblems: React.FC = () => {
             <Fields
                 name="description"
                 inputElement={
-                    <textarea
+                    <Input
                         className="border-2"
                         onChange={handleDescriptionChange}
                     />
@@ -265,7 +272,8 @@ export const CreateProblems: React.FC = () => {
                             onClick={handleProblemImageClick}
                         />
                         <Button
-                            variant="outlined"
+                            variant="filled"
+                            color="cyan"
                             onClick={handleProblemImageUpload}
                         >
                             {uploadProblemImageLoading ? "Uploading" : "Upload"}
@@ -274,7 +282,7 @@ export const CreateProblems: React.FC = () => {
                 }
             />
             <br />
-            <Fields
+            {/* <Fields
                 name="solution"
                 inputElement={
                     <div className="space-x-4">
@@ -285,7 +293,8 @@ export const CreateProblems: React.FC = () => {
                             onClick={handleProblemImageClick}
                         />
                         <Button
-                            variant="outlined"
+                            variant="filled"
+                            color="cyan"
                             onClick={handleProblemImageUpload}
                         >
                             {uploadProblemImageLoading ? "Uploading" : "Upload"}
@@ -293,7 +302,7 @@ export const CreateProblems: React.FC = () => {
                     </div>
                 }
             />
-            <br />
+            <br /> */}
             <Fields
                 name="sample test cases"
                 inputElement={
@@ -326,7 +335,8 @@ export const CreateProblems: React.FC = () => {
                             <div>
                                 <Button
                                     onClick={handleFinalTestCaseUpload}
-                                    variant="outlined"
+                                    variant="filled"
+                                    color="cyan"
                                 >
                                     {uploadFinalTestCaseLoading
                                         ? "Uploading"
@@ -392,7 +402,8 @@ export const CreateProblems: React.FC = () => {
             <Button
                 onClick={createProblem}
                 className="w-full"
-                variant="outlined"
+                variant="filled"
+                color="cyan"
             >
                 CREATE PROBLEM
             </Button>

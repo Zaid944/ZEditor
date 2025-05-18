@@ -52,18 +52,18 @@ export const Navbar: React.FC = () => {
                 <div className="flex justify-between w-1/2">
                     <Button
                         size="large"
-                        color="cyan"
+                        color="primary"
                         variant="filled"
                         className="ml-20"
                     >
                         <Link to="/">Home</Link>
                     </Button>
-                    <Button size="large" color="cyan" variant="filled">
+                    <Button size="large" color="primary" variant="filled">
                         <Link to="/problems">Problems</Link>
                     </Button>
                     <Button
                         size="large"
-                        color="cyan"
+                        color="primary"
                         variant="filled"
                         className="mr-10"
                     >
