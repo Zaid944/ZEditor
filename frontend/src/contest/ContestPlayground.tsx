@@ -2,7 +2,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { useEffect, useState, useContext, act } from "react";
+import { useEffect, useState, useContext, act, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SocketContext } from "../context/socket";
 import { Tabs } from "antd";
@@ -28,9 +28,9 @@ export function ContestPlayground() {
 
     const [numberOfProblems, setNumberOfProblems] = useState("");
     const [difficuly, setDifficulty] = useState("");
-    const [hour, setHour] = useState(null);
-    const [mins, setMins] = useState(null);
-    const [secs, setSecs] = useState(null);
+    const [hour, setHour] = useState(0);
+    const [mins, setMins] = useState(0);
+    const [secs, setSecs] = useState(0);
     const [problems, setProblems] = useState<problemType[]>([]);
     const [username, setUsername] = useState("");
     const [users, setUsers] = useState<string[]>([]);
@@ -45,7 +45,7 @@ export function ContestPlayground() {
     // console.log("users is: ", users);
     console.log("zaiddddd username is: ", username);
     console.log("activeKey", activeKey);
-    async function getProblems() {
+    const getProblems = useCallback(async () => {
         const cookie = Cookies.get("authToken");
         console.log(
             `http://localhost:5001/problemset/v1/allProblems?count=${localStorage.getItem(
@@ -68,7 +68,7 @@ export function ContestPlayground() {
         } catch (err) {
             console.log(err);
         }
-    }
+    }, []);
 
     // console.log("render component");
 
@@ -86,10 +86,47 @@ export function ContestPlayground() {
     // socket.on("get-close-contest", navigateToLeaderboard);
 
     useEffect(() => {
+        // const yoFunction = (data) => {
+        //     console.log("zaidddd contest info data is : ", data);
+        //     if (!hour) {
+        //         setHour(data.value.hour);
+        //     }
+        //     if (!mins) {
+        //         setMins(data.value.mins);
+        //     }
+        //     if (!secs) {
+        //         setSecs(data.value.secs);
+        //     }
+        //     if (!numberOfProblems) {
+        //         setNumberOfProblems(data.value.problemCount);
+        //     }
+        //     if (!difficuly) {
+        //         setDifficulty(data.value.difficulty);
+        //     }
+        // };
+
+        // socket.emit("get-contest-info", { roomid: roomId });
+
+        // socket.on("contest-info-val", yoFunction);
+
+        // if (!localStorage.getItem("hour")) {
         setHour(Number.parseInt(localStorage.getItem("hour")));
+        // }
+        // if (!localStorage.getItem("mins")) {
         setMins(Number.parseInt(localStorage.getItem("mins")));
+        // }
+        // if (!localStorage.getItem("secs")) {
         setSecs(Number.parseInt(localStorage.getItem("secs")));
+        // }
+        // if (!localStorage.getItem("difficulty")) {
+        //     setDifficulty(localStorage.getItem("difficulty"));
+        // }
+        // if (!localStorage.getItem("problemCount")) {
+        //     setNumberOfProblems(localStorage.getItem("problemCount"));
+        // }
+
         getProblems();
+
         // socket.emit("store-time", {
         //     time: hour * 3600 + mins * 60 + secs,
         //     roomid: roomId,
@@ -144,16 +181,16 @@ export function ContestPlayground() {
         socket.on("time", getTimeFunc);
         return () => {
             socket.off("allusers", handleAllUsers);
-            // socket.off("time", getTimeFunc);
+            // socket.off("contest-info-val", yoFunction); // socket.off("time", getTimeFunc);
             // clearInterval(intervalId);
             // socket.off("close-contest", navigateToLeaderboard);
             //handle socket disconnection
         };
-    }, [activeKey, hour, mins, navigate, roomId, secs, socket]);
+    }, [activeKey, getProblems, navigate, roomId, socket]);
 
     console.log("zaid getTime", getTime);
 
-    // console.log("users length", users.length.toString());
+    console.log("users length", users.length.toString());
 
     return (
         <div>

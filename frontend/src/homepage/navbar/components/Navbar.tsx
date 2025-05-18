@@ -46,6 +46,7 @@ export const Navbar: React.FC = () => {
             ],
         },
     ];
+
     return (
         <>
             <div className="flex mt-20 ml-10 mr-10 px-10 py-8 justify-between rounded-md">
@@ -66,20 +67,26 @@ export const Navbar: React.FC = () => {
                         color="primary"
                         variant="filled"
                         className="mr-10"
+                        onClick={() => {
+                            setMenuVisible((menuVisible) => !menuVisible);
+                        }}
                     >
-                        <Link to="/contest">Contest</Link>
+                        {/* <Link to="/contest">Contest</Link> */}
+                        Contest
                     </Button>
                 </div>
                 <div>
                     <Menu theme="light" mode="horizontal" items={items} />
                 </div>
                 {menuVisible && (
-                    <div className="top-[177px] right-[78px] absolute z-10 min-w-[180px] overflow-auto rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg shadow-sm focus:outline-none">
+                    <div className="top-[170px] left-[610px] absolute z-10 min-w-[180px] overflow-auto rounded-lg border border-slate-200 bg-white p-1.5 shadow-lg shadow-sm focus:outline-none">
                         <div className="cursor-pointer text-slate-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100">
-                            Profile
+                            <Link to="/contest/create-room">
+                                Create Contest
+                            </Link>
                         </div>
                         <div className="cursor-pointer text-slate-800 flex w-full text-sm items-center rounded-md p-3 transition-all hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100">
-                            Signout
+                            <Link to="/contest/join-room">Join Contest</Link>
                         </div>
                     </div>
                 )}

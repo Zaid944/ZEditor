@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Button } from "@mui/material";
+import { Button, Card } from "antd";
 import toast from "react-hot-toast";
 import { Base64 } from "js-base64";
 import { Editor, EditorProps } from "@monaco-editor/react";
@@ -209,40 +209,50 @@ export const Playground = ({
                 value={languagesList[languagesListIdx].value}
                 language={languagesList[languagesListIdx].language}
                 onChange={handleEditorChange}
+                theme="vs-dark"
             />
             <br />
-            <div>
+            <Card>
                 <div className="flex justify-between">
-                    <div className="w-[20%]">Input</div>
+                    <div className="w-[20%] ml-10">Input</div>
                     <textarea
                         onChange={handleInputChange}
-                        className="w-[80%] border-2 border-black"
+                        className="w-[80%] border-2 rounded-lg border-black"
                     />
                 </div>
                 <br />
                 <div className="flex justify-between">
-                    <div className="w-[20%]">Output</div>
+                    <div className="w-[20%] ml-10">Output</div>
                     <textarea
                         onChange={handleOutputChange}
                         value={outputValue}
-                        className="w-[80%] border-2 border-black"
+                        className="w-[80%] rounded-lg border-2 border-black"
                     />
                 </div>
-            </div>
+            </Card>
             <br />
-            <div className="w-[20%] flex justify-between">
-                <Button color="success" onClick={handleProblemSubmit}>
+            <div className="ml-10 w-[30%] flex justify-between">
+                <Button
+                    variant="solid"
+                    color="green"
+                    onClick={handleProblemSubmit}
+                >
                     Submit
                 </Button>
-                <Button color="primary" onClick={handleProblemRun}>
+                <Button
+                    variant="solid"
+                    color="orange"
+                    onClick={handleProblemRun}
+                >
                     Run
                 </Button>
-                <Button color="primary" onClick={handleContestEnd}>
+                <Button variant="solid" color="red" onClick={handleContestEnd}>
                     EndContest
                 </Button>
             </div>
+            <br />
             {time && (
-                <div>
+                <div className="ml-10">
                     <p>
                         Time left:{" "}
                         {`${Math.floor(time / (60 * 60))}`.padStart(2, "0")}:

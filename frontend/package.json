@@ -25,6 +25,7 @@
         "@uiw/react-codemirror": "^4.23.7",
         "@zeditor/common": "1.0.0",
         "antd": "^5.24.9",
+        "antd-mobile": "^5.39.0",
         "axios": "^1.7.9",
         "js-base64": "^3.7.7",
         "js-cookie": "^3.0.5",

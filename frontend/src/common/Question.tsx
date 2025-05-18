@@ -1,6 +1,7 @@
 //improve using antd
-import { problemType } from "@zeditor/common";
-import { List } from "antd";
+import Lozenge from "@atlaskit/lozenge";
+import { Difficulty, problemType } from "@zeditor/common";
+import { Card, List } from "antd";
 
 type QuestionProps = {
     problem: problemType;
@@ -8,20 +9,28 @@ type QuestionProps = {
 export const Question = ({ problem }: QuestionProps) => {
     return (
         <>
-            <div className="w-[50%]">
-                <div>
+            <div>
+                <Card>
                     <div className="font-bold">Title: </div>
                     <div>{problem.title}</div>
-                </div>
-                <div>
+                </Card>
+                <Card>
                     <div className="font-bold">Description: </div>
                     <div>{problem.description}</div>
-                </div>
+                </Card>
                 {problem.problemImage && (
-                    <img src={problem.problemImage} alt="" />
+                    <Card>
+                        <div className="font-bold">Problem Image: </div>
+                        <br />
+                        <img
+                            className="w-1/2 h-48 rounded-lg"
+                            src={problem.problemImage}
+                            alt=""
+                        />
+                    </Card>
                 )}
                 {problem.sample_tc.length > 0 && (
-                    <div>
+                    <Card>
                         <div>
                             <div className="font-bold">Sample Test Cases: </div>
                         </div>
@@ -33,11 +42,11 @@ export const Question = ({ problem }: QuestionProps) => {
                                             Sample Test Case #{index + 1}
                                         </List.Item>
                                         <List.Item>{tc.explanation}</List.Item>
-                                        {tc.image && (
+                                        {/* {tc.image && (
                                             <List.Item>
                                                 <img src={tc.image} alt="" />
                                             </List.Item>
-                                        )}
+                                        )} */}
                                         <List.Item>
                                             Input
                                             <br />
@@ -52,10 +61,10 @@ export const Question = ({ problem }: QuestionProps) => {
                                 );
                             })}
                         </div>
-                    </div>
+                    </Card>
                 )}
                 {problem.constraints.length > 0 && (
-                    <div>
+                    <Card>
                         <div className="font-bold">Constraints: </div>
                         <div>
                             <List>
@@ -73,10 +82,10 @@ export const Question = ({ problem }: QuestionProps) => {
                                 )}
                             </List>
                         </div>
-                    </div>
+                    </Card>
                 )}
                 {problem.topics.length > 0 && (
-                    <div>
+                    <Card>
                         <div className="font-bold">Topics: </div>
                         <div>
                             <List>
@@ -90,12 +99,22 @@ export const Question = ({ problem }: QuestionProps) => {
                                 })}
                             </List>
                         </div>
-                    </div>
+                    </Card>
                 )}
-                <div>
+                <Card>
                     <div className="font-bold">Difficulty: </div>
-                    <div>{problem.difficulty}</div>
-                </div>
+                    <Lozenge
+                        appearance={
+                            Difficulty.Enum.EASY === problem.difficulty
+                                ? "success"
+                                : Difficulty.Enum.MEDIUM === problem.difficulty
+                                ? "moved"
+                                : "removed"
+                        }
+                    >
+                        {problem.difficulty}
+                    </Lozenge>
+                </Card>
             </div>
         </>
     );

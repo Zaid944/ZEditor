@@ -30,6 +30,7 @@ const rooms: any = {};
 const scores: any = {};
 const contest: any = {};
 const contestTime: any = {};
+const contestInfo: any = {};
 
 /**
  * {
@@ -122,6 +123,24 @@ io.on("connection", (socket: any) => {
     socket.on("get-store-time", (payload: any) => {
         io.to(payload.roomid).emit("time", {
             time: Math.max(0, contestTime[payload.roomid]),
+        });
+    });
+
+    socket.on("contest-info", (payload: any) => {
+        if (!contestInfo[payload.roomid]) {
+            contestInfo[payload.roomid] = {
+                hour: payload.hour,
+                mins: payload.mins,
+                secs: payload.secs,
+                difficulty: payload.difficulty,
+                problemCount: payload.problemCount,
+            };
+        }
+    });
+
+    socket.on("get-contest-info", (payload: any) => {
+        io.to(payload.roomid).emit("contest-info-val", {
+            value: contestInfo[payload.roomid],
         });
     });
 

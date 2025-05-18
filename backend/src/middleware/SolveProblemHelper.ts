@@ -55,6 +55,7 @@ export async function SolveProblemHelper(req: any, res: any, next: any) {
         };
 
         req.body = solveProblemReqBody;
+        next();
     } catch (err) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             err,
